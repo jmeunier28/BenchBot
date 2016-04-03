@@ -29,7 +29,7 @@ import serial.tools.list_ports
 
 # This loads the GUI from the .ui file that is created by QtDesigner. The .ui file should be in the same folder as this
 # python file (or specify different path).
-Ui_MainWindow, QtBaseClass = uic.loadUiType('DobotMainUi.ui')
+Ui_MainWindow, QtBaseClass = uic.loadUiType('BenchBotMain.ui')
 
 
 # Here, a class is defined to represent the entire GUI. It is derived from a Qt class named QMainWindow, which

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>625</width>
-    <height>510</height>
+    <width>660</width>
+    <height>574</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Open-Dobot-GUI</string>
+   <string>BenchBot-GUI</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -25,8 +25,8 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>561</width>
-      <height>461</height>
+      <width>631</width>
+      <height>511</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -34,6 +34,9 @@
     </property>
     <property name="currentIndex">
      <number>1</number>
+    </property>
+    <property name="usesScrollButtons">
+     <bool>false</bool>
     </property>
     <widget class="QWidget" name="tabManualControl">
      <attribute name="title">
@@ -45,7 +48,7 @@
         <x>0</x>
         <y>170</y>
         <width>341</width>
-        <height>211</height>
+        <height>231</height>
        </rect>
       </property>
       <property name="title">
@@ -57,7 +60,7 @@
          <x>240</x>
          <y>60</y>
          <width>94</width>
-         <height>120</height>
+         <height>136</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -138,8 +141,8 @@
         <rect>
          <x>21</x>
          <y>20</y>
-         <width>194</width>
-         <height>175</height>
+         <width>191</width>
+         <height>210</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -296,7 +299,7 @@
         <x>350</x>
         <y>120</y>
         <width>171</width>
-        <height>151</height>
+        <height>171</height>
        </rect>
       </property>
       <property name="title">
@@ -308,7 +311,7 @@
          <x>10</x>
          <y>30</y>
          <width>131</width>
-         <height>111</height>
+         <height>133</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_11">
@@ -574,9 +577,9 @@ font-size: 18px;</string>
       <property name="geometry">
        <rect>
         <x>350</x>
-        <y>280</y>
+        <y>300</y>
         <width>171</width>
-        <height>151</height>
+        <height>171</height>
        </rect>
       </property>
       <property name="title">
@@ -588,7 +591,7 @@ font-size: 18px;</string>
          <x>10</x>
          <y>30</y>
          <width>131</width>
-         <height>111</height>
+         <height>133</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_15">
@@ -921,6 +924,21 @@ font-size: 18px;</string>
       </item>
      </layout>
     </widget>
+    <widget class="QWidget" name="tabWorkSpace">
+     <attribute name="title">
+      <string>Work Space</string>
+     </attribute>
+     <widget class="QOpenGLWidget" name="openGLWidget">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>110</y>
+        <width>300</width>
+        <height>200</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -928,14 +946,205 @@ font-size: 18px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>625</width>
-     <height>21</height>
+     <width>660</width>
+     <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="new_file_action"/>
+    <addaction name="open_file_action"/>
+    <addaction name="separator"/>
+    <addaction name="save_file_action"/>
+    <addaction name="save_as_file_action"/>
+    <addaction name="save_all_file_action"/>
+    <addaction name="separator"/>
+    <addaction name="exit_file_action"/>
+   </widget>
+   <widget class="QMenu" name="menuConfiguration">
+    <property name="title">
+     <string>Configuration</string>
+    </property>
+    <addaction name="edit_workspace_action"/>
+   </widget>
+   <widget class="QMenu" name="menuCloning">
+    <property name="title">
+     <string>Cloning</string>
+    </property>
+    <widget class="QMenu" name="pcr_cloning_task_action">
+     <property name="title">
+      <string>PCR</string>
+     </property>
+     <addaction name="new_pcr_cloning_task_action"/>
+     <addaction name="separator"/>
+     <addaction name="mike_pcr_cloning_task_action"/>
+     <addaction name="jojo_pcr_cloning_task_action"/>
+    </widget>
+    <widget class="QMenu" name="colony_cloning_task_action">
+     <property name="title">
+      <string>Colony </string>
+     </property>
+     <addaction name="new_colony_cloning_task_action"/>
+     <addaction name="separator"/>
+     <addaction name="mike_colony_cloning_task_action"/>
+     <addaction name="jojo_colony_cloning_task_action"/>
+    </widget>
+    <addaction name="new_cloning_task_action"/>
+    <addaction name="separator"/>
+    <addaction name="pcr_cloning_task_action"/>
+    <addaction name="colony_cloning_task_action"/>
+   </widget>
+   <widget class="QMenu" name="menuTissue">
+    <property name="title">
+     <string>Tissue</string>
+    </property>
+    <addaction name="bio_tissue_task_action"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menuUser">
+    <property name="title">
+     <string>User</string>
+    </property>
+    <addaction name="user_add_task_action"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuConfiguration"/>
+   <addaction name="menuCloning"/>
+   <addaction name="menuTissue"/>
+   <addaction name="menuUser"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="text">
+    <string>Save as..</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="new_file_action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>New..</string>
+   </property>
+  </action>
+  <action name="open_file_action">
+   <property name="text">
+    <string>Open..</string>
+   </property>
+  </action>
+  <action name="save_file_action">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_as_2">
+   <property name="text">
+    <string>Save as..</string>
+   </property>
+  </action>
+  <action name="actionSave_all">
+   <property name="text">
+    <string>Save all</string>
+   </property>
+  </action>
+  <action name="save_as_file_action">
+   <property name="text">
+    <string>Save As..</string>
+   </property>
+  </action>
+  <action name="save_all_file_action">
+   <property name="text">
+    <string>Save All</string>
+   </property>
+  </action>
+  <action name="exit_file_action">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionPCR">
+   <property name="text">
+    <string>PCR</string>
+   </property>
+  </action>
+  <action name="new_cloning_task_action">
+   <property name="text">
+    <string>New Task..</string>
+   </property>
+  </action>
+  <action name="new_pcr_cloning_task_action">
+   <property name="text">
+    <string>New PCR Task..</string>
+   </property>
+  </action>
+  <action name="mike_pcr_cloning_task_action">
+   <property name="text">
+    <string>Mike's PCR Task</string>
+   </property>
+  </action>
+  <action name="jojo_pcr_cloning_task_action">
+   <property name="text">
+    <string>JoJo's PCR Task</string>
+   </property>
+  </action>
+  <action name="new_colony_cloning_task_action">
+   <property name="text">
+    <string>New Colony Task..</string>
+   </property>
+  </action>
+  <action name="mike_colony_cloning_task_action">
+   <property name="text">
+    <string>Mike's Colony Task</string>
+   </property>
+  </action>
+  <action name="jojo_colony_cloning_task_action">
+   <property name="text">
+    <string>JoJo's Colony Task</string>
+   </property>
+  </action>
+  <action name="edit_workspace_action">
+   <property name="text">
+    <string>Edit WorkSpace</string>
+   </property>
+  </action>
+  <action name="user_add_task_action">
+   <property name="text">
+    <string>Add Task..</string>
+   </property>
+  </action>
+  <action name="bio_tissue_task_action">
+   <property name="text">
+    <string>Biology </string>
+   </property>
+  </action>
+  <action name="actionMore_biology">
+   <property name="text">
+    <string>More biology</string>
+   </property>
+  </action>
+  <action name="actionSave_the_biology">
+   <property name="text">
+    <string>Save the biology</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
 </ui>
-

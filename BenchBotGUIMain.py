@@ -1,15 +1,14 @@
 """
-Open Source Dobot GUI Application: open-dobot-gui
+Open Source BenchBot GUI Application: BenchBot
 Contains main function for entire application, GUI initilization and functions
-First Author: Mike Ferguson www.mikeahferguson.com 3/26/2016
-Additional Authors (Add your name below):
-1.
+Authors: 
+
+1. Mike Ferguson www.mikeahferguson.com 3/26/2016
+2. JoJo Meunier jmeunier@bu.edu 4/3/2016
+
 License: MIT
-
 Requires PyQt5 to be installed.
-
 Anything Qt specific (functions, classes, etc.. starts with the letter Q)
-
 The GUI template is created by a program called QtDesigner, which spits out a .ui file, which is basically just an XML
 file that describes the GUI elements. In the designer, the elements are given object names. The first step of the code
 below is to load the .ui file and get a reference to it.
@@ -17,43 +16,58 @@ below is to load the .ui file and get a reference to it.
 """
 
 
-
-
 import serial, time, struct
 import sys, os, threading
 from threading import Thread
-from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidget, QListWidgetItem, QFileDialog, QMessageBox, QTableWidget, QTableWidgetItem
-from PyQt5 import uic, QtCore, QtGui
+from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidget, QListWidgetItem, QFileDialog, QMessageBox, QTableWidget, QTableWidgetItem, QDialog
+from PyQt5 import uic, QtCore, QtGui, QtWidgets
 import DobotInverseKinematics
 import serial.tools.list_ports
 
-# This loads the GUI from the .ui file that is created by QtDesigner. The .ui file should be in the same folder as this
-# python file (or specify different path).
 Ui_MainWindow, QtBaseClass = uic.loadUiType('BenchBotMain.ui')
 
 
-# Here, a class is defined to represent the entire GUI. It is derived from a Qt class named QMainWindow, which
-# corresponds to the GUI type specified in QtDesigner. All of the functional aspects (as opposed to design aspects) of
-# the GUI are defined in this class. For example, what happens when a user presses a button.
+class TaskDialogWindow(QDialog):
+
+    def __init__(self, parent=None):
+        super(TaskDialogWindow,self).__init__()
+        Ui_Dialog, QtBaseClass = uic.loadUiType('TaskDialogBox.ui')
+        self.diag = Ui_Dialog()
+        self.diag.setupUi(self)
+
+class WorkSpaceDialog(QDialog):
+
+    def __init__(self, parent=None):
+        super(WorkSpaceDialog, self).__init__()
+        Ui_Dialog, QtBaseClass = uic.loadUiType('WorkSpaceConfig.ui')
+        self.diag = Ui_Dialog()
+        self.diag.setupUi(self)
+
+
 class DobotGUIApp(QMainWindow):
     # class initialization function (initialize the GUI)
     def __init__(self, parent=None):
-        # I'm a python noob, but I'm guessing this means initialize the parent class. I imagine all the super classes
-        # have to be explicitly initialized.
+
         super(DobotGUIApp, self).__init__(parent)
-        # This sets up the ui variable of this class to refer to the loaded .ui file.
         self.ui = Ui_MainWindow()
-        # This call is required. Does whatever set up is required, probably gets references to the elements and so on.
         self.ui.setupUi(self)
 
-        # Anything named after self.ui. (e.g. self.ui.x) means you are referring to an object name x that corresponds
-        # to an element in the gui. Qt uses a signals and slots framework to define what happens in response to UI
-        # events. You'll have to look that up if you're interested in it.
 
+        # connect to menubar QAction item options for Task bar Dialog Box
 
-        ###
-        # Connect gui elements in the .ui file to event handling functions.
-        ###
+        self.task = TaskDialogWindow()
+        self.ui.new_cloning_task_action.triggered.connect(self.task.show) #want to be able to set window name too depending on what they clicked
+        self.ui.new_pcr_cloning_task_action.triggered.connect(self.task.show)
+        self.ui.mike_pcr_cloning_task_action.triggered.connect(self.task.show)
+        self.ui.jojo_pcr_cloning_task_action.triggered.connect(self.task.show)
+        self.ui.new_colony_cloning_task_action.triggered.connect(self.task.show)
+        self.ui.mike_colony_cloning_task_action.triggered.connect(self.task.show)
+        self.ui.jojo_colony_cloning_task_action.triggered.connect(self.task.show)
+
+        # connect to menubar QAction item options for WorkSpaceConfig Dialog Box
+
+        self.work = WorkSpaceDialog()
+        self.ui.edit_workspace_action.triggered.connect(self.work.show)
 
         # connect serial ports list refresh button clicked event to the update serial port list function
         self.ui.pushButtonRefreshSerialPortsList.clicked.connect(self.update_serial_port_list)
@@ -96,13 +110,6 @@ class DobotGUIApp(QMainWindow):
         self.try_to_connect_to_an_arduino_port_on_application_start()
         # populate the serial ports list widget
         self.update_serial_port_list()
-
-
-
-
-
-
-
 
 
     def pushButtonMoveToCoordinate_clicked(self):
@@ -163,9 +170,6 @@ class DobotGUIApp(QMainWindow):
         print(moveToAngles[1])
         print('ik lower angle')
         print(moveToAngles[2])
-
-
-
 
 
         moveToUpperArmAngleFloat = moveToAngles[1]
@@ -352,9 +356,6 @@ class DobotGUIApp(QMainWindow):
 
 
         return returnBool
-
-
-
 
 
     def pushButtonStepForward_clicked(self):
@@ -629,7 +630,6 @@ class DobotGUIApp(QMainWindow):
 
 
 
-
 # main function
 if __name__ == '__main__':
     # These first three lines initialize the Qt application/GUI.
@@ -643,3 +643,4 @@ if __name__ == '__main__':
 
     # Says to exit the whole code when the Qt application is closed. app.exec returns some value when qt app quits
     sys.exit(app.exec_())
+

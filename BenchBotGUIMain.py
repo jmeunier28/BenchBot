@@ -52,7 +52,7 @@ class ShowFileDialog(QFileDialog):
     def __init__(self,parent=None):
         super(ShowFileDialog,self).__init__()
 
-'''class GLWidget(QOpenGLWidget):
+class GLWidget(QOpenGLWidget):
     xRotationChanged = pyqtSignal(int)
     yRotationChanged = pyqtSignal(int)
     zRotationChanged = pyqtSignal(int)
@@ -229,7 +229,7 @@ class ShowFileDialog(QFileDialog):
         self.gl.glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF())
 
     def setColor(self, c):
-        self.gl.glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF())'''
+        self.gl.glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF())
 
 
 class DobotGUIApp(QMainWindow):
@@ -242,20 +242,20 @@ class DobotGUIApp(QMainWindow):
 
         # connect to WorkSpace Tab and control GLWidget
 
+        
         self.glWidget = GLWidget()
 
-
         self.ui.x_vert_slider.valueChanged.connect(self.glWidget.setXRotation)
-        self.glWidget.xRotationChanged.connect(self.ui.x_vert_slider.setValue)
+        self.ui.openGLWidget.xRotationChanged.connect(self.ui.x_vert_slider.setValue)
         self.ui.y_vert_slider.valueChanged.connect(self.glWidget.setYRotation)
-        self.glWidget.yRotationChanged.connect(self.ui.y_vert_slider.setValue)
-        self.z_vert_slider.valueChanged.connect(self.glWidget.setZRotation)
-        self.glWidget.zRotationChanged.connect(self.ui.z_vert_slider.setValue)
+        self.ui.openGLWidget.yRotationChanged.connect(self.ui.y_vert_slider.setValue)
+        self.ui.z_vert_slider.valueChanged.connect(self.glWidget.setZRotation)
+        self.ui.openGLWidget.zRotationChanged.connect(self.ui.z_vert_slider.setValue)
 
 
-        #self.xSlider.setValue(15 * 16)
-        #self.ySlider.setValue(345 * 16)
-        #self.zSlider.setValue(0 * 16)
+        self.ui.x_vert_slider.setValue(15 * 16)
+        self.ui.y_vert_slider.setValue(345 * 16)
+        self.ui.z_vert_slider.setValue(0 * 16)
 
 
         # connect to menubar QAction item options for Task bar Dialog Box
@@ -272,7 +272,7 @@ class DobotGUIApp(QMainWindow):
         # connect to menubar QAction item options for WorkSpaceConfig Dialog Box
 
         self.work = WorkSpaceDialog()
-        self.ui.edit_workspace_action.triggered.connect(self.work.show)
+        self.ui.actionNew_Work_Space.triggered.connect(self.work.show)
 
         # connect serial ports list refresh button clicked event to the update serial port list function
         self.ui.pushButtonRefreshSerialPortsList.clicked.connect(self.update_serial_port_list)

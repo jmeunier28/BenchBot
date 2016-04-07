@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>398</width>
-    <height>316</height>
+    <width>481</width>
+    <height>315</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Task Dialog</string>
+   <string>Dialog</string>
   </property>
-  <widget class="QDialogButtonBox" name="task_diag_buttonBox">
+  <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>270</y>
-     <width>341</width>
+     <x>30</x>
+     <y>260</y>
+     <width>421</width>
      <height>32</height>
     </rect>
    </property>
@@ -29,95 +29,89 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QListView" name="listView">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>20</y>
-     <width>341</width>
-     <height>231</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::NoFrame</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Raised</enum>
-   </property>
-  </widget>
-  <widget class="QDoubleSpinBox" name="samples_doubleSpinBox">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>110</y>
-     <width>66</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="layoutDirection">
-    <enum>Qt::LeftToRight</enum>
-   </property>
-   <property name="decimals">
-    <number>0</number>
-   </property>
-  </widget>
-  <widget class="QDoubleSpinBox" name="primer_SpinBox">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>150</y>
-     <width>66</width>
-     <height>24</height>
-    </rect>
-   </property>
-   <property name="decimals">
-    <number>0</number>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="samples_label">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>110</y>
-     <width>131</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Number of Samples</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="primers_label">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>150</y>
-     <width>131</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Number of Primers</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>50</y>
-     <width>121</width>
-     <height>16</height>
+     <x>20</x>
+     <y>40</y>
+     <width>161</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
-    <string>PCR Task Settings:</string>
+    <string>Dialog Config Python File</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="upload_python">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>40</y>
+     <width>115</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Browse</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>100</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Dialog Config UI File</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>160</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>WorkSpace Config File</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="upload_ui">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>100</y>
+     <width>115</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Browse</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="upload_json">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>160</y>
+     <width>115</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Browse</string>
    </property>
   </widget>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>task_diag_buttonBox</sender>
+   <sender>buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>Dialog</receiver>
    <slot>accept()</slot>
@@ -133,7 +127,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>task_diag_buttonBox</sender>
+   <sender>buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>Dialog</receiver>
    <slot>reject()</slot>

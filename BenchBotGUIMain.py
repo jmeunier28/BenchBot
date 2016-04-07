@@ -8,10 +8,8 @@ Authors:
 
 License: MIT
 Requires PyQt5 to be installed.
-Anything Qt specific (functions, classes, etc.. starts with the letter Q)
-The GUI template is created by a program called QtDesigner, which spits out a .ui file, which is basically just an XML
-file that describes the GUI elements. In the designer, the elements are given object names. The first step of the code
-below is to load the .ui file and get a reference to it.
+Anything Qt specific 
+Uses Python 3.x
 
 """
 
@@ -21,15 +19,12 @@ import sys, os, threading
 from threading import Thread
 from PyQt5.QtCore import pyqtSignal, QPoint, QSize, Qt
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QListWidget, QListWidgetItem, QFileDialog, QWidget,
-                            QMessageBox, QTableWidget, QTableWidgetItem, QDialog, QHBoxLayout, QOpenGLWidget, QSlider)
+                            QMessageBox, QTableWidget, QTableWidgetItem, QDialog, QHBoxLayout, QOpenGLWidget, QSlider, QDialogButtonBox)
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 import DobotInverseKinematics
 import serial.tools.list_ports
 
-
-
-Ui_MainWindow, QtBaseClass = uic.loadUiType('BenchBotMain.ui')
 
 class NewTaskDialogWindow(QDialog):
 
@@ -44,6 +39,7 @@ class NewTaskDialogWindow(QDialog):
         self.diag.upload_python.clicked.connect(self.upload_python_clicked)
         self.diag.upload_ui.clicked.connect(self.upload_ui_clicked)
         self.diag.upload_json.clicked.connect(self.upload_json_clicked)
+        self.diag.buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked)
 
     def upload_python_clicked(self):
         file_dialog = QFileDialog()
@@ -66,6 +62,10 @@ class NewTaskDialogWindow(QDialog):
         print ('Path to file is:\n')
         print (file)
 
+    def ok_button_clicked(self):
+        # code to set the new files will go here 
+        print ("okay button works")
+
 class PCRTaskDialogWindow(QDialog):
 
     def __init__(self, parent=None):
@@ -74,6 +74,16 @@ class PCRTaskDialogWindow(QDialog):
         self.diag = Ui_Dialog()
         self.diag.setupUi(self)
 
+        #connect buttons and user inputs:
+        #self.diag.samples_doubleSpinBox.somethingggg
+        #self.diag.primer_doubleSpinBox.somethingg
+        self.diag.task_diag_buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked)
+
+    def ok_button_clicked(self):
+        #code to set standard json file for workspace of pcr
+        #and use this to draw 
+        pass
+
 class ColonyTaskDialogWindow(QDialog):
 
     def __init__(self, parent=None):
@@ -81,6 +91,14 @@ class ColonyTaskDialogWindow(QDialog):
         Ui_Dialog, QtBaseClass = uic.loadUiType('CloningTaskDialogBox.ui')
         self.diag = Ui_Dialog()
         self.diag.setupUi(self)
+
+        self.diag.buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked)
+
+    def ok_button_clicked(self):
+        #code to set standard json file for workspace of pcr
+        #and use this to draw 
+        pass
+
 
 class WorkSpaceDialog(QDialog):
 
@@ -96,6 +114,7 @@ class DobotGUIApp(QMainWindow):
     def __init__(self, parent=None):
 
         super(DobotGUIApp, self).__init__(parent)
+        Ui_MainWindow, QtBaseClass = uic.loadUiType('BenchBotMain.ui')
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 

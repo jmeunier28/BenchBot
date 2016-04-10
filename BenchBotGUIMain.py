@@ -24,9 +24,12 @@ from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 import DobotInverseKinematics
 import serial.tools.list_ports
+import CreateCustomTaskGUI, ColonyTaskDialogGUI, PCRTaskDialogGUI
+from CreateCustomTaskGUI import NewTaskDialogWindow
+from PCRTaskDialogGUI import PCRTaskDialogWindow
+from ColonyTaskDialogGUI import ColonyTaskDialogWindow
 
-
-class NewTaskDialogWindow(QDialog):
+'''class NewTaskDialogWindow(QDialog):
 
     def __init__(self, parent=None):
         super(NewTaskDialogWindow,self).__init__()
@@ -106,7 +109,7 @@ class WorkSpaceDialog(QDialog):
         super(WorkSpaceDialog, self).__init__()
         Ui_Dialog, QtBaseClass = uic.loadUiType('WorkSpaceConfig.ui')
         self.diag = Ui_Dialog()
-        self.diag.setupUi(self)
+        self.diag.setupUi(self)'''
 
 
 class DobotGUIApp(QMainWindow):
@@ -135,6 +138,7 @@ class DobotGUIApp(QMainWindow):
         self.ui.y_vert_slider.setValue(345 * 16)
         self.ui.z_vert_slider.setValue(0 * 16)'''
 
+
         #conenct menubar QAction File option to a QFileDialog 
 
         self.ui.new_file_action.triggered.connect(self.file_dialog_clicked)
@@ -158,6 +162,10 @@ class DobotGUIApp(QMainWindow):
 
         self.work = WorkSpaceDialog()
         self.ui.actionNew_Work_Space.triggered.connect(self.work.show)
+
+        #Work Space tab widgets connections:
+
+        #self.ui.drop_down_box.addItem
 
         # connect serial ports list refresh button clicked event to the update serial port list function
 
@@ -726,7 +734,7 @@ class DobotGUIApp(QMainWindow):
             msg.setWindowTitle(windowTitle)
             msg.exec()
 
-class GLWidget(QOpenGLWidget):
+'''class GLWidget(QOpenGLWidget):
     xRotationChanged = pyqtSignal(int)
     yRotationChanged = pyqtSignal(int)
     zRotationChanged = pyqtSignal(int)
@@ -903,7 +911,7 @@ class GLWidget(QOpenGLWidget):
         self.gl.glClearColor(c.redF(), c.greenF(), c.blueF(), c.alphaF())
 
     def setColor(self, c):
-        self.gl.glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF())
+        self.gl.glColor4f(c.redF(), c.greenF(), c.blueF(), c.alphaF())'''
 
 # main function
 if __name__ == '__main__':

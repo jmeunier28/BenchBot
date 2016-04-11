@@ -1,0 +1,142 @@
+[
+  {
+    "TipBox": [
+      {
+        "Dimensions": {
+          "height": 5,
+          "length": 5,
+          "width": 5
+        },
+        "Footprint": {
+          "x": 1,
+          "y": 2
+        },
+        "Location": {
+          "x": 0,
+          "y": 90,
+          "z": 0
+        },
+        "firstTipLocation": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "gridDimensions": {
+          "columns": 12,
+          "rows": 8
+        },
+        "tipNum": {
+          "tip_number": 96
+        },
+        "tipSpacing": {
+          "column_spacing": 2,
+          "row_spacing": 2
+        }
+      }
+    ]
+  },
+  {
+    "TubeRack": [
+      {
+        "Dimensions": {
+          "height": 5,
+          "length": 5,
+          "width": 5
+        },
+        "Footprint": {
+          "x": 1,
+          "y": 2
+        },
+        "Location": {
+          "x": 0,
+          "y": 90,
+          "z": 0
+        },
+        "firstTipLocation": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "gridDimensions": {
+          "columns": 18,
+          "rows": 5
+        },
+        "tipNum": {
+          "well_number": 90
+        },
+        "tipSpacing": {
+          "column_spacing": 2,
+          "row_spacing": 2
+        },
+        "tubeHeight": {
+          "height": 20
+        }
+      }
+    ]
+  },
+  {
+    "MicroPlate": [
+      {
+        "Dimensions": {
+          "height": 5,
+          "length": 5,
+          "width": 5
+        },
+        "Footprint": {
+          "x": 1,
+          "y": 2
+        },
+        "Location": {
+          "x": 0,
+          "y": 90,
+          "z": 0
+        },
+        "firstTipLocation": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "gridDimensions": {
+          "columns": 12,
+          "rows": 8
+        },
+        "tipNum": {
+          "tip_number": 96
+        },
+        "tipSpacing": {
+          "column_spacing": 2,
+          "row_spacing": 2
+        }
+      }
+    ]
+  },
+  {
+    "WasteContainer": [
+      {
+        "Dimensions": {
+          "height": 5,
+          "length": 5,
+          "width": 5
+        },
+        "Footprint": {
+          "x": 1,
+          "y": 2
+        },
+        "Location": {
+          "x": 0,
+          "y": 90,
+          "z": 0
+        },
+        "containerHole": {
+          "x:": 1,
+          "y": 1
+        },
+        "holeEdgePosition": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+    ]
+  }
+]

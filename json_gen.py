@@ -85,7 +85,7 @@ class JSON:
 						"Location":Location,"tipNum":tipNum,"gridDimensions":gridDimensions,
 						"tipSpacing":tipSpacing,"firstTipLocation":firstTipLocation}]
 
-		self.data = [{"collection": "TipBox","parameters":tipBoxObject}]
+		self.data = {"collection": "TipBox","parameters":tipBoxObject}
 		JSON.data_array.append(self.data)
 
 
@@ -104,7 +104,7 @@ class JSON:
 						"Location":Location,"tipNum":wellNum,"gridDimensions":gridDimensions,
 						"tipSpacing":wellSpacing,"firstTipLocation":firstWellLocation,"tubeHeight":tubeHeight}]
 
-		self.data = [{"collection":"TubeRack", "parameters":tubeRackObject}]
+		self.data = {"collection":"TubeRack", "parameters":tubeRackObject}
 		JSON.data_array.append(self.data)
 
 
@@ -120,7 +120,7 @@ class JSON:
 		wasteContainerObject = [{"Footprint": Footprint,"Dimensions":Dimensions,
 						"Location":Location,"containerHole":containerHole,"holeEdgePosition":holeEdgePosition}]
 
-		self.data = [{"collection":"WasteContainer", "parameters":wasteContainerObject}]
+		self.data = {"collection":"WasteContainer", "parameters":wasteContainerObject}
 		JSON.data_array.append(self.data)
 
 
@@ -138,7 +138,7 @@ class JSON:
 						"Location":Location,"tipNum":wellNum,"gridDimensions":gridDimensions,
 						"tipSpacing":wellSpacing,"firstTipLocation":firstWellLocation}]
 
-		self.data = [{"collection":"MicroPlate","parameters":microPlateObject}]
+		self.data = {"collection":"MicroPlate","parameters":microPlateObject}
 		JSON.data_array.append(self.data)
 
 

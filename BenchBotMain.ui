@@ -928,16 +928,6 @@ font-size: 18px;</string>
      <attribute name="title">
       <string>Work Space</string>
      </attribute>
-     <widget class="QOpenGLWidget" name="openGLWidget">
-      <property name="geometry">
-       <rect>
-        <x>9</x>
-        <y>10</y>
-        <width>491</width>
-        <height>461</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QPushButton" name="pushButton_2">
       <property name="geometry">
        <rect>

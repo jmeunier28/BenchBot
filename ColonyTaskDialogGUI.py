@@ -1,5 +1,10 @@
 '''
-COLONY DIALOG BOX CLASS
+Author: Jojo Meunier jmeunier@bu.edu 4/10/16
+
+Class for Colony Task dialog windows
+
+once parameters are set for colony task default json workspace config file will be used 
+to generate the work space and display workspace in WorkSpaceTab on main GUI
 
 '''
 
@@ -9,8 +14,8 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QListWidget, QListWidget
                             QMessageBox, QTableWidget, QTableWidgetItem, QDialog, QHBoxLayout, QOpenGLWidget, QSlider, QDialogButtonBox)
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
-import DobotInverseKinematics
-import serial.tools.list_ports
+import sys
+import json
 
 class ColonyTaskDialogWindow(QDialog):
 

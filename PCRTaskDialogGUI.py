@@ -1,5 +1,10 @@
 '''
-PCR DIALOG BOX CLASS
+Author: JoJo Meunier jmeunier@bu.edu 4/10/16
+
+Class for PCR Task dialog windows
+
+once parameters are set for colony task default json workspace config file will be used 
+to generate the work space and display workspace in WorkSpaceTab on main GUI
 
 '''
 
@@ -10,6 +15,10 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QListWidget, QListWidget
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 import sys
+import drawCubes, get_json_data
+from drawCubes import glWidget
+from get_json_data import CollectData
+
 
 
 
@@ -27,9 +36,13 @@ class PCRTaskDialogWindow(QDialog):
         self.diag.task_diag_buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked)
 
     def ok_button_clicked(self):
-        #code to set standard json file for workspace of pcr
-        #and use this to draw 
-        pass
+        #get the data from the standard data file:
+        #self.mydata = CollectData()
+        #self.mydata.loadfile()
+        #tip_dimensions,tip_location = self.mydata.get_tipBox_data()
+        self.widget = glWidget()
+        self.widget.setWindowTitle('Work Space Window')
+        self.widget.show()
 
 # main function
 if __name__ == '__main__':

@@ -1,5 +1,14 @@
 '''
-CREATE NEW CUSTOM TASK DIALOG BOX CLASS
+
+Author: Jojo Meunier jmeunier@bu.edu 4/10/16
+
+Class that contains Create New Task Dialog window 
+Allows user to upload python, ui and json files 
+
+uploading the python and ui files will give the user freedom and flexibility to 
+define a new task with unique parameters 
+
+uploading a custom json file will generate a new workspace
 
 '''
 
@@ -11,6 +20,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QListWidget, QListWidget
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 import sys
+import json
 
 
 class NewTaskDialogWindow(QDialog):

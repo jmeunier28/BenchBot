@@ -30,29 +30,29 @@ class CollectData:
 	def get_tipBox_data(self):
 		for objects in self.data:
 			if objects["collection"]== "TipBox":
-				return objects["parameters"][0]["Dimensions"]
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
 
 
 	def get_tubeRack_data(self):
 		for objects in self.data:
 			if objects["collection"] == "TubeRack":
-				return objects["parameters"][0]["Dimensions"]
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
 
 
 	def get_wasteContainer_data(self):
 		for objects in self.data:
 			if objects["collection"] == "WasteContainer":
-				return objects["parameters"][0]["Dimensions"]
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
 
 	def get_microPlate_data(self):
 		for objects in self.data:
 			if objects["collection"] == "MicroPlate":
-				return objects["parameters"][0]["Dimensions"]
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
 
 
 hello = CollectData()
 hello.loadfile()
-hello.get_tipBox_data()
+print(hello.get_tipBox_data())
 hello.get_tubeRack_data()
 hello.get_wasteContainer_data()
 hello.get_microPlate_data()

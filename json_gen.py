@@ -60,6 +60,12 @@ import os
 
 class JSON:
 
+	'''
+	Import NOTE for modifying the dimensions: length corresponds to the z coordinate in a 3d plane
+	while height correponds to the y coordinte in the 3d plane. The width corresponds to x
+
+	'''
+
 	filepath = sys.argv[1]
 	data_array = []
 
@@ -74,8 +80,8 @@ class JSON:
 	def write_tip_box(self):
 
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":5,"width":5,"height":5}
-		Location = {"x":0,"y":90,"z":0}
+		Dimensions = {"length":30,"width":12,"height":45}
+		Location = {"x":3.0,"y":0.0,"z":-10.0}
 		tipNum = {"tip_number":96}
 		gridDimensions = {"rows":8,"columns":12}
 		tipSpacing = {"row_spacing":2, "column_spacing":2}
@@ -92,8 +98,8 @@ class JSON:
 	def write_tube_rack(self):
 
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":5,"width":5,"height":5}
-		Location = {"x":0,"y":90,"z":0}
+		Dimensions = {"length":15,"width":6,"height":30}
+		Location = {"x":-3.0,"y":0.0,"z":-5.0}
 		wellNum = {"well_number":90}
 		gridDimensions = {"rows":5,"columns":18}
 		wellSpacing = {"row_spacing":2, "column_spacing":2}
@@ -112,8 +118,8 @@ class JSON:
 	def write_waste_container(self):
 		
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":5,"width":5,"height":5}
-		Location = {"x":0,"y":90,"z":0}
+		Dimensions = {"length":5,"width":12,"height":12}
+		Location = {"x":-5.0,"y":0.0,"z":-5.0}
 		containerHole = {"x:":1, "y":1}
 		holeEdgePosition = {"x":1,"y":1,"z":1}
 
@@ -127,8 +133,8 @@ class JSON:
 	def write_micro_plate(self):
 		
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":5,"width":5,"height":5}
-		Location = {"x":0,"y":90,"z":0}
+		Dimensions = {"length":10,"width":10,"height":10}
+		Location = {"x":-2.0,"y":0.0,"z":-3.0}
 		wellNum = {"tip_number":96}
 		gridDimensions = {"rows":8,"columns":12}
 		wellSpacing = {"row_spacing":2, "column_spacing":2}

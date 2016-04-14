@@ -1,20 +1,21 @@
 [
   {
-    "TipBox": [
+    "collection": "TipBox",
+    "parameters": [
       {
         "Dimensions": {
-          "height": 5,
-          "length": 5,
-          "width": 5
+          "height": 45,
+          "length": 30,
+          "width": 12
         },
         "Footprint": {
           "x": 1,
           "y": 2
         },
         "Location": {
-          "x": 0,
-          "y": 90,
-          "z": 0
+          "x": 8.0,
+          "y": 0.0,
+          "z": -10.0
         },
         "firstTipLocation": {
           "x": 1,
@@ -36,21 +37,22 @@
     ]
   },
   {
-    "TubeRack": [
+    "collection": "TubeRack",
+    "parameters": [
       {
         "Dimensions": {
-          "height": 5,
-          "length": 5,
-          "width": 5
+          "height": 30,
+          "length": 15,
+          "width": 6
         },
         "Footprint": {
           "x": 1,
           "y": 2
         },
         "Location": {
-          "x": 0,
-          "y": 90,
-          "z": 0
+          "x": -3.0,
+          "y": 0.0,
+          "z": -5.0
         },
         "firstTipLocation": {
           "x": 1,
@@ -75,21 +77,22 @@
     ]
   },
   {
-    "MicroPlate": [
+    "collection": "MicroPlate",
+    "parameters": [
       {
         "Dimensions": {
-          "height": 5,
-          "length": 5,
-          "width": 5
+          "height": 10,
+          "length": 10,
+          "width": 10
         },
         "Footprint": {
           "x": 1,
           "y": 2
         },
         "Location": {
-          "x": 0,
-          "y": 90,
-          "z": 0
+          "x": -2.0,
+          "y": 0.0,
+          "z": -3.0
         },
         "firstTipLocation": {
           "x": 1,
@@ -111,21 +114,22 @@
     ]
   },
   {
-    "WasteContainer": [
+    "collection": "WasteContainer",
+    "parameters": [
       {
         "Dimensions": {
-          "height": 5,
+          "height": 12,
           "length": 5,
-          "width": 5
+          "width": 12
         },
         "Footprint": {
           "x": 1,
           "y": 2
         },
         "Location": {
-          "x": 0,
-          "y": 90,
-          "z": 0
+          "x": -5.0,
+          "y": 0.0,
+          "z": -5.0
         },
         "containerHole": {
           "x:": 1,

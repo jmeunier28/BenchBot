@@ -39,7 +39,6 @@ class DobotGUIApp(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-
         #conenct menubar QAction File option to a QFileDialog 
 
         self.ui.new_file_action.triggered.connect(self.file_dialog_clicked)
@@ -52,7 +51,8 @@ class DobotGUIApp(QMainWindow):
         self.task2 = ColonyTaskDialogWindow()
 
         self.ui.new_cloning_task_action.triggered.connect(self.new_task.show) 
-        self.ui.new_pcr_cloning_task_action.triggered.connect(self.task.show)
+        hello = self.ui.new_pcr_cloning_task_action
+        hello.triggered.connect(self.task.show)
         self.ui.mike_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.jojo_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.new_colony_cloning_task_action.triggered.connect(self.task2.show)

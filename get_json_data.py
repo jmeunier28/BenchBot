@@ -49,10 +49,3 @@ class CollectData:
 			if objects["collection"] == "MicroPlate":
 				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
 
-
-hello = CollectData()
-hello.loadfile()
-print(hello.get_tipBox_data())
-hello.get_tubeRack_data()
-hello.get_wasteContainer_data()
-hello.get_microPlate_data()

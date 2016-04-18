@@ -56,8 +56,10 @@ class NewTaskDialogWindow(QDialog):
         file_dialog = QFileDialog()
         file_dialog.setFileMode(QFileDialog.AnyFile)
         file = file_dialog.getOpenFileName(self, 'Open File', '', "JSON Files (*.json)")
+        file2 = file_dialog.getSaveFileName(self,'Open JSON','',"JSON Files (*.json)")
         print ('Path to file is:\n')
         print (file)
+        print(file2)
 
     def ok_button_clicked(self):
         # code to set the new files will go here 

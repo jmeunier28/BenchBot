@@ -30,19 +30,26 @@ class PCRTaskDialogWindow(QDialog):
         self.diag = Ui_Dialog()
         self.diag.setupUi(self)
 
-        #connect buttons and user inputs:
-        #self.diag.samples_doubleSpinBox.somethingggg
-        #self.diag.primer_doubleSpinBox.somethingg
+        self.samples = self.diag.samples_doubleSpinBox
+        self.samples.setRange(0,100)
+        self.samples.setSingleStep(1)
+        self.samples.setValue(0)
+
+        self.primer = self.diag.primer_SpinBox
+        self.primer.setRange(0,100)
+        self.primer.setSingleStep(1)
+        self.primer.setValue(0)
+
+        #when okay button is clicked workspace config pops up and data should be sent back to main
         self.diag.task_diag_buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked)
 
     def ok_button_clicked(self):
-        #get the data from the standard data file:
-        #self.mydata = CollectData()
-        #self.mydata.loadfile()
-        #tip_dimensions,tip_location = self.mydata.get_tipBox_data()
+        primer = self.primer.value()
+        samples = self.samples.value()
         self.widget = glWidget()
         self.widget.setWindowTitle('Work Space Window')
         self.widget.show()
+        return primer, samples
 
 # main function
 if __name__ == '__main__':

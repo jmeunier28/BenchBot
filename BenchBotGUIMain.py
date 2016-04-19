@@ -53,8 +53,8 @@ class DobotGUIApp(QMainWindow):
         self.ui.new_cloning_task_action.triggered.connect(self.new_task.show) 
         hello = self.ui.new_pcr_cloning_task_action
         hello.triggered.connect(self.task.show)
-        primer, samples = hello.triggered.connect(self.task.get_values())
-        self.display_glWidget_onTab(primer, samples)
+        #primer, samples = hello.triggered.connect(self.task.get_values())
+        self.display_glWidget_onTab()
 
         self.ui.mike_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.jojo_pcr_cloning_task_action.triggered.connect(self.task.show)
@@ -100,12 +100,13 @@ class DobotGUIApp(QMainWindow):
         # populate the serial ports list widget
         self.update_serial_port_list()
 
-    def display_glWiget_onTab(self, primer, samples):
+    def display_glWidget_onTab(self, primer=None, samples=None):
         self.primer = primer
         self.samples = samples
         self.drawCubes = glWidget()
-        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.paintGL())
-        self.ui.runButton.clicked.connect(self.run_path_way)
+        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.initializeGL)
+        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.paintGL)
+        #self.ui.runButton.clicked.connect(self.run_path_way)
 
     def run_path_way(self):
         #code to run the robot through specific path that is calculated via a graph

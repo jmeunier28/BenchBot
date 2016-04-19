@@ -195,14 +195,14 @@ class glWidget(QGLWidget):
             (-self.x,self.y,self.z)
             )
 
-        return verticies, 
+        return verticies, micro_location
 
-    def find_path(self):
-        '''
+    '''def find_path(self):
+        
         Path way graph definition:
         robot_vert[4] -> tipbox_vert[1] -> tuberack_vert[5] -> micro_vert[1] -> waste_vert[1]
         if robot clears these verticies it will not hit anything
-        '''
+        
         robot_vert,robot_loc = self.robot_cube()
         tipbox_vert,tipbox_loc = self.tipBox_cube()
         tube_vert,tube_loc = self.tubeBox_cube()
@@ -219,7 +219,7 @@ class glWidget(QGLWidget):
         lines = (robot_vert[4],tipbox_vert[1],tube_vert[5],micro_vert[1],waste_vert[1])
         path_way = ((0,1),(1,2),(2,3),(3,4))
 
-        return lines, path_way
+        return lines, path_way'''
 
     def paintGL(self):
 
@@ -248,14 +248,14 @@ class glWidget(QGLWidget):
                     glVertex3fv(vert_data[i][vertex])                    
             glEnd()
         #draw path to show user how robot will travel:
-        lines, path_way = self.find_path()
+        '''lines, path_way = self.find_path()
         glLoadIdentity()
         glBegin(GL_LINES)
         for path in path_way:
             for line in path:
                 glColor3f(0,0,1) #draw the pathway blue
                 glVertex3vf(lines[line])
-        glEnd()
+        glEnd()'''
         glutSwapBuffers()
 
 

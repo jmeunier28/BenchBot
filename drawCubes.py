@@ -203,11 +203,19 @@ class glWidget(QGLWidget):
         robot_vert[4] -> tipbox_vert[1] -> tuberack_vert[5] -> micro_vert[1] -> waste_vert[1]
         if robot clears these verticies it will not hit anything
         '''
-        robot_vert,_ = self.robot_cube()
-        tipbox_vert,_ = self.tipBox_cube()
-        tube_vert,_ = self.tubeBox_cube()
-        micro_vert,_ = self.micro_cube()
-        waste_vert,_ = self.waste_cube()
+        robot_vert,robot_loc = self.robot_cube()
+        tipbox_vert,tipbox_loc = self.tipBox_cube()
+        tube_vert,tube_loc = self.tubeBox_cube()
+        micro_vert,micro_loc = self.micro_cube()
+        waste_vert,waste_loc = self.waste_cube()
+
+        #adjust for the location of the cubes:
+        robot_vert[4] = (robot_vert[4][0]+robot_loc[0],robot_vert[4][1]+robot_loc[1],robot_vert[4][2]+robot_loc[2])
+        tipbox_vert[1] = (tipbox_vert[1][0]+tipbox_loc[0],tipbox_vert[1][1]+tipbox_loc[1],tipbox_vert[1][2]+tipbox_loc[2])
+        tube_vert[5] = (tube_vert[5][0]+tube_loc[0],tube_vert[5][1]+tube_loc[1],tube_vert[5][2]+tube_loc[2])
+        micro_vert[1] = (micro_vert[1][0]+micro_loc[0],micro_vert[1][1]+micro_loc[1],micro_vert[1][2]+micro_loc[2])
+        waste_vert[1] = (waste_vert[1][0]+waste_loc[0],waste_vert[1][1]+waste_loc[1],waste_vert[1][2]+waste_loc[2])
+
         lines = (robot_vert[4],tipbox_vert[1],tube_vert[5],micro_vert[1],waste_vert[1])
         path_way = ((0,1),(1,2),(2,3),(3,4))
 
@@ -241,7 +249,6 @@ class glWidget(QGLWidget):
             glEnd()
         #draw path to show user how robot will travel:
         lines, path_way = self.find_path()
-        #idk where this will be drawn
         glLoadIdentity()
         glBegin(GL_LINES)
         for path in path_way:

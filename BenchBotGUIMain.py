@@ -43,6 +43,8 @@ class DobotGUIApp(QMainWindow):
 
         self.ui.new_file_action.triggered.connect(self.file_dialog_clicked)
 
+        #tab widgets check name
+        self.ui.tabWidget.currentChanged.connect(self.selector)
 
         # connect to menubar QAction item options for Task bar Dialog Box
 
@@ -54,7 +56,7 @@ class DobotGUIApp(QMainWindow):
         hello = self.ui.new_pcr_cloning_task_action
         hello.triggered.connect(self.task.show)
         #primer, samples = hello.triggered.connect(self.task.get_values())
-        self.display_glWidget_onTab()
+
 
         self.ui.mike_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.jojo_pcr_cloning_task_action.triggered.connect(self.task.show)
@@ -100,13 +102,16 @@ class DobotGUIApp(QMainWindow):
         # populate the serial ports list widget
         self.update_serial_port_list()
 
-    def display_glWidget_onTab(self, primer=None, samples=None):
+    def selector(self, selected_index):
+        if selected_index == 2:
+            self.display_glWiget_onTab()
+
+    def display_glWiget_onTab(self, primer, samples):
         self.primer = primer
         self.samples = samples
         self.drawCubes = glWidget()
-        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.initializeGL)
-        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.paintGL)
-        #self.ui.runButton.clicked.connect(self.run_path_way)
+        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.paintGL())
+        self.ui.runButton.clicked.connect(self.run_path_way)
 
     def run_path_way(self):
         #code to run the robot through specific path that is calculated via a graph

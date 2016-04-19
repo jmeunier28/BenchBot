@@ -62,7 +62,8 @@ class NewTaskDialogWindow(QDialog):
         print(file2)
 
     def ok_button_clicked(self):
-        # code to set the new files will go here 
+        # code to set the new files will go here
+        #self.signal =
         print ("okay button works")
 
 # main function

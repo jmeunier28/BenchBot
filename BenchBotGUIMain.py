@@ -53,17 +53,14 @@ class DobotGUIApp(QMainWindow):
         self.ui.new_cloning_task_action.triggered.connect(self.new_task.show) 
         hello = self.ui.new_pcr_cloning_task_action
         hello.triggered.connect(self.task.show)
+        primer, samples = hello.triggered.connect(self.task.get_values())
+        self.display_glWidget_onTab(primer, samples)
 
         self.ui.mike_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.jojo_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.new_colony_cloning_task_action.triggered.connect(self.task2.show)
         self.ui.mike_colony_cloning_task_action.triggered.connect(self.task2.show)
         self.ui.jojo_colony_cloning_task_action.triggered.connect(self.task2.show)
-
-        #Work Space tab widgets connections:
-
-        self.drawCubes = glWidget()
-        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.paintGL())
 
 
         # connect serial ports list refresh button clicked event to the update serial port list function
@@ -98,16 +95,22 @@ class DobotGUIApp(QMainWindow):
         self.currentYPosition = 0
         self.currentZPosition = 0
 
-
-
-        ###
-        # General initialization code
-        ###
-
         # if there is a port available whose description starts with "Arduino", try to connect to it
         self.try_to_connect_to_an_arduino_port_on_application_start()
         # populate the serial ports list widget
         self.update_serial_port_list()
+
+    def display_glWiget_onTab(self, primer, samples):
+        self.primer = primer
+        self.samples = samples
+        self.drawCubes = glWidget()
+        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.paintGL())
+        self.ui.runButton.clicked.connect(self.run_path_way)
+
+    def run_path_way(self):
+        #code to run the robot through specific path that is calculated via a graph
+        #use drawCubes path method to do this
+        pass
 
     
     def file_dialog_clicked(self):

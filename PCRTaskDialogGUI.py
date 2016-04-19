@@ -44,12 +44,15 @@ class PCRTaskDialogWindow(QDialog):
         self.diag.task_diag_buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked)
 
     def ok_button_clicked(self):
-        sender = self.sender()
-        primer = self.primer.value()
-        samples = self.samples.value()
         self.widget = glWidget()
         self.widget.setWindowTitle('Work Space Window')
         self.widget.show()
+
+    def get_values(self):
+        primer = self.primer.value()
+        samples = self.samples.value()
+        return primer, samples
+
         
 
 # main function

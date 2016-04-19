@@ -43,6 +43,8 @@ class DobotGUIApp(QMainWindow):
 
         self.ui.new_file_action.triggered.connect(self.file_dialog_clicked)
 
+        #tab widgets check name
+        self.ui.tabWidget.currentChanged.connect(self.selector)
 
         # connect to menubar QAction item options for Task bar Dialog Box
 
@@ -53,8 +55,7 @@ class DobotGUIApp(QMainWindow):
         self.ui.new_cloning_task_action.triggered.connect(self.new_task.show) 
         hello = self.ui.new_pcr_cloning_task_action
         hello.triggered.connect(self.task.show)
-        primer, samples = hello.triggered.connect(self.task.get_values())
-        self.display_glWidget_onTab(primer, samples)
+        #primer, samples = hello.triggered.connect(self.task.get_values())
 
         self.ui.mike_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.jojo_pcr_cloning_task_action.triggered.connect(self.task.show)
@@ -99,6 +100,10 @@ class DobotGUIApp(QMainWindow):
         self.try_to_connect_to_an_arduino_port_on_application_start()
         # populate the serial ports list widget
         self.update_serial_port_list()
+
+    def selector(self, selected_index):
+        if selected_index == 2:
+            self.display_glWiget_onTab()
 
     def display_glWiget_onTab(self, primer, samples):
         self.primer = primer

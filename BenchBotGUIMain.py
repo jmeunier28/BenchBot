@@ -62,8 +62,8 @@ class DobotGUIApp(QMainWindow):
 
         #Work Space tab widgets connections:
 
-        #self.drawCubes = glWidget()
-        #self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.show)
+        self.drawCubes = glWidget()
+        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.paintGL())
 
 
         # connect serial ports list refresh button clicked event to the update serial port list function

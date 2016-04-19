@@ -248,7 +248,7 @@ class glWidget(QGLWidget):
             for line in path:
                 glColor3f(0,0,1) #draw the pathway blue
                 glVertex3vf(lines[line])
-
+        glEnd()
         glutSwapBuffers()
 
 

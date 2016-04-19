@@ -964,6 +964,16 @@ font-size: 18px;</string>
        <string>Select Task:</string>
       </property>
      </widget>
+     <widget class="QOpenGLWidget" name="openGLWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>511</width>
+        <height>491</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>

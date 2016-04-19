@@ -24,11 +24,11 @@ from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 import DobotInverseKinematics
 import serial.tools.list_ports
-import CreateCustomTaskGUI, ColonyTaskDialogGUI, PCRTaskDialogGUI, drawShapes
+import CreateCustomTaskGUI, ColonyTaskDialogGUI, PCRTaskDialogGUI, drawCubes
 from CreateCustomTaskGUI import NewTaskDialogWindow
 from PCRTaskDialogGUI import PCRTaskDialogWindow
 from ColonyTaskDialogGUI import ColonyTaskDialogWindow
-from drawShapes import glWidget
+from drawCubes import glWidget
 
 class DobotGUIApp(QMainWindow):
     # class initialization function (initialize the GUI)
@@ -53,6 +53,7 @@ class DobotGUIApp(QMainWindow):
         self.ui.new_cloning_task_action.triggered.connect(self.new_task.show) 
         hello = self.ui.new_pcr_cloning_task_action
         hello.triggered.connect(self.task.show)
+
         self.ui.mike_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.jojo_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.new_colony_cloning_task_action.triggered.connect(self.task2.show)
@@ -61,7 +62,9 @@ class DobotGUIApp(QMainWindow):
 
         #Work Space tab widgets connections:
 
-        #self.ui.drop_down_box.addItem
+        #self.drawCubes = glWidget()
+        #self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.show)
+
 
         # connect serial ports list refresh button clicked event to the update serial port list function
 

@@ -48,4 +48,9 @@ class CollectData:
 		for objects in self.data:
 			if objects["collection"] == "MicroPlate":
 				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
+	
+	def get_robot_data(self):
+		for objects in self.data:
+			if objects["collection"] == "Robot":
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
 

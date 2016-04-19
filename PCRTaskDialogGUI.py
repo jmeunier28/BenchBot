@@ -3,7 +3,7 @@ Author: JoJo Meunier jmeunier@bu.edu 4/10/16
 
 Class for PCR Task dialog windows
 
-once parameters are set for colony task default json workspace config file will be used 
+once parameters are set for PCR task default json workspace config file will be used 
 to generate the work space and display workspace in WorkSpaceTab on main GUI
 
 '''
@@ -44,12 +44,13 @@ class PCRTaskDialogWindow(QDialog):
         self.diag.task_diag_buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked)
 
     def ok_button_clicked(self):
+        sender = self.sender()
         primer = self.primer.value()
         samples = self.samples.value()
         self.widget = glWidget()
         self.widget.setWindowTitle('Work Space Window')
         self.widget.show()
-        return primer, samples
+        
 
 # main function
 if __name__ == '__main__':

@@ -80,8 +80,8 @@ class JSON:
 	def write_tip_box(self):
 
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":30,"width":12,"height":45}
-		Location = {"x":0.0,"y":0.0,"z":-10.0}
+		Dimensions = {"length":12,"width":12,"height":10}
+		Location = {"x":2.0,"y":-3.0,"z":-8.0}
 		tipNum = {"tip_number":96}
 		gridDimensions = {"rows":8,"columns":12}
 		tipSpacing = {"row_spacing":2, "column_spacing":2}
@@ -98,8 +98,8 @@ class JSON:
 	def write_tube_rack(self):
 
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":15,"width":6,"height":30}
-		Location = {"x":-3.0,"y":-2.0,"z":-10.0}
+		Dimensions = {"length":6,"width":30,"height":30}
+		Location = {"x":3.0,"y":-2.0,"z":-12.0}
 		wellNum = {"well_number":90}
 		gridDimensions = {"rows":5,"columns":18}
 		wellSpacing = {"row_spacing":2, "column_spacing":2}
@@ -118,8 +118,8 @@ class JSON:
 	def write_waste_container(self):
 		
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":5,"width":12,"height":12}
-		Location = {"x":3.0,"y":-3.0,"z":8.0}
+		Dimensions = {"length":4,"width":12,"height":12}
+		Location = {"x":2.0,"y":-3.0,"z":-6.0}
 		containerHole = {"x:":1, "y":1}
 		holeEdgePosition = {"x":1,"y":1,"z":1}
 
@@ -133,8 +133,8 @@ class JSON:
 	def write_micro_plate(self):
 		
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":10,"width":10,"height":10}
-		Location = {"x":0.0,"y":-3.0,"z":-5.0}
+		Dimensions = {"length":5,"width":12,"height":10}
+		Location = {"x":5.0,"y":-3.0,"z":-4.5}
 		wellNum = {"tip_number":96}
 		gridDimensions = {"rows":8,"columns":12}
 		wellSpacing = {"row_spacing":2, "column_spacing":2}
@@ -145,6 +145,18 @@ class JSON:
 						"tipSpacing":wellSpacing,"firstTipLocation":firstWellLocation}]
 
 		self.data = {"collection":"MicroPlate","parameters":microPlateObject}
+		JSON.data_array.append(self.data)
+
+	def write_robot(self):
+
+		Footprint = {"x":1,"y":2}
+		Dimensions = {"length":23,"width":12,"height":45}
+		Location = {"x":5.0,"y":0.0,"z":-8.0}
+
+		robotObject = [{"Footprint": Footprint,"Dimensions":Dimensions,
+						"Location":Location}]
+
+		self.data = {"collection": "Robot","parameters":robotObject}
 		JSON.data_array.append(self.data)
 
 
@@ -160,4 +172,5 @@ new_json.write_tip_box()
 new_json.write_tube_rack()
 new_json.write_micro_plate()
 new_json.write_waste_container()
+new_json.write_robot()
 new_json.store_data()

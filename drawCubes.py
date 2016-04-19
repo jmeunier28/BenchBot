@@ -5,6 +5,12 @@ Author: JoJo Meunier jmeunier@bu.edu 4/10/16
 python script using pyopengl to draw shapes 
 this will be used to model the workspace in 3D on an openGL widget in pyqt
 
+
+Also draws path way as it would be for robot... 
+goes from tube rack -> tip box -> micro plate -> waste container
+
+not a biologist so idk if thats right 
+
 '''
 
 from OpenGL.GL import *
@@ -42,6 +48,35 @@ class glWidget(QGLWidget):
     
     def __init__(self, parent = None):
         super(glWidget, self).__init__(parent)
+
+    def robot_cube(self):
+
+        self.get_data = CollectData()
+        self.get_data.loadfile()
+        robot_dimensions, robot_location = self.get_data.get_robot_data()
+
+        self.x = float(robot_dimensions["width"]) / 10
+        self.y = float(robot_dimensions["height"]) / 10
+        self.z = float(robot_dimensions["length"]) / 10
+
+        self.locationX = robot_location["x"]
+        self.locationY = robot_location["y"]
+        self.locationZ = robot_location["z"]
+
+        robot_location = [self.locationX,self.locationY,self.locationZ]
+
+        verticies = (
+            (self.x,-self.y,-self.z),
+            (self.x,self.y,-self.z),
+            (-self.x,self.y,-self.z),
+            (-self.x,-self.y,-self.z),
+            (self.x,-self.y,self.z),
+            (self.x,self.y,self.z),
+            (-self.x,-self.y,self.z),
+            (-self.x,self.y,self.z)
+            )
+
+        return verticies, robot_location
 
     def tipBox_cube(self):
 
@@ -160,22 +195,24 @@ class glWidget(QGLWidget):
             (-self.x,self.y,self.z)
             )
 
-        return verticies, micro_location
+        return verticies, 
 
+    def find_path(self):
+        pass
 
-
-    def paintGL(self, Width=640,Height=480):
+    def paintGL(self):
 
     #define the verticies of the cube to be drawn:
 
+        robot_verticies, robot_location = self.robot_cube()
         tipBox_verticies, tipBox_location = self.tipBox_cube()
         tubeBox_verticies, tubeBox_location = self.tubeBox_cube()
         waste_verticies, waste_location = self.waste_cube()
         micro_verticies, micro_location = self.micro_cube()
 
-        vert_data = [tipBox_verticies, tubeBox_verticies, waste_verticies, micro_verticies]
-        local_data = [tipBox_location,tubeBox_location,waste_location,micro_location]
-        colorMatrix = ((0,1,0),(1,0,0),(1,1,0),(1,0,1)) #draw the cubes all different colors
+        vert_data = [robot_verticies, tipBox_verticies, tubeBox_verticies, waste_verticies, micro_verticies]
+        local_data = [robot_location, tipBox_location,tubeBox_location,waste_location,micro_location]
+        colorMatrix = ((1,1,1),(0,1,0),(1,0,0),(1,1,0),(1,0,1)) #draw the cubes all different colors
 
         glMatrixMode(GL_MODELVIEW)
         
@@ -189,6 +226,8 @@ class glWidget(QGLWidget):
                     glColor3f(colorMatrix[i][0],colorMatrix[i][1],colorMatrix[i][2])
                     glVertex3fv(vert_data[i][vertex])                    
             glEnd()
+        #draw path to show user how robot will travel:
+
         glutSwapBuffers()
 
 
@@ -197,7 +236,7 @@ class glWidget(QGLWidget):
         glClearDepth(1.0) 
         glLoadIdentity()
         glMatrixMode(GL_PROJECTION)
-        gluPerspective(100.0,680/480,.1,50.0)
+        gluPerspective(120.0,680/480,.1,50.0)
         glDepthFunc(GL_LESS)
         glEnable(GL_DEPTH_TEST)
         glShadeModel(GL_SMOOTH)   

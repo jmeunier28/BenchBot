@@ -19,7 +19,7 @@ import sys, os, threading
 from threading import Thread
 from PyQt5.QtCore import pyqtSignal, QPoint, QSize, Qt
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QListWidget, QListWidgetItem, QFileDialog, QWidget,
-                            QMessageBox, QTableWidget, QTableWidgetItem, QDialog, QHBoxLayout, QOpenGLWidget, QSlider, QDialogButtonBox)
+                            QMessageBox, QTableWidget, QTableWidgetItem, QDialog, QHBoxLayout, QVBoxLayout,QOpenGLWidget, QSlider, QDialogButtonBox)
 from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 import DobotInverseKinematics
@@ -44,7 +44,10 @@ class DobotGUIApp(QMainWindow):
         self.ui.new_file_action.triggered.connect(self.file_dialog_clicked)
 
         #tab widgets check name
-        self.ui.tabWidget.currentChanged.connect(self.selector)
+        self.drawCubes = glWidget()
+        self.ui.gridLayout.addWidget(self.drawCubes)
+        self.setLayout(self.ui.gridLayout)
+
 
         # connect to menubar QAction item options for Task bar Dialog Box
 
@@ -102,16 +105,6 @@ class DobotGUIApp(QMainWindow):
         # populate the serial ports list widget
         self.update_serial_port_list()
 
-    def selector(self, selected_index):
-        if selected_index == 2:
-            self.display_glWiget_onTab()
-
-    def display_glWiget_onTab(self, primer, samples):
-        self.primer = primer
-        self.samples = samples
-        self.drawCubes = glWidget()
-        self.ui.openGLWidget.aboutToCompose.connect(self.drawCubes.paintGL())
-        self.ui.runButton.clicked.connect(self.run_path_way)
 
     def run_path_way(self):
         #code to run the robot through specific path that is calculated via a graph

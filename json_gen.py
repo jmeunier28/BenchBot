@@ -118,8 +118,8 @@ class JSON:
 	def write_waste_container(self):
 		
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":4,"width":12,"height":12}
-		Location = {"x":2.0,"y":-3.0,"z":-6.0}
+		Dimensions = {"length":5,"width":12,"height":12}
+		Location = {"x":5.0,"y":-3.0,"z":-4.5}
 		containerHole = {"x:":1, "y":1}
 		holeEdgePosition = {"x":1,"y":1,"z":1}
 
@@ -133,8 +133,8 @@ class JSON:
 	def write_micro_plate(self):
 		
 		Footprint = {"x":1,"y":2}
-		Dimensions = {"length":5,"width":12,"height":10}
-		Location = {"x":5.0,"y":-3.0,"z":-4.5}
+		Dimensions = {"length":4,"width":12,"height":12}
+		Location = {"x":2.0,"y":-3.0,"z":-6.0}
 		wellNum = {"tip_number":96}
 		gridDimensions = {"rows":8,"columns":12}
 		wellSpacing = {"row_spacing":2, "column_spacing":2}

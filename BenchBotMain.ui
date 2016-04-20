@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>678</width>
+    <width>686</width>
     <height>583</height>
    </rect>
   </property>
@@ -928,51 +928,45 @@ font-size: 18px;</string>
      <attribute name="title">
       <string>Work Space</string>
      </attribute>
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>440</y>
-        <width>140</width>
-        <height>32</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Clear Work Space</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="drop_down_box">
-      <property name="geometry">
-       <rect>
-        <x>510</x>
-        <y>40</y>
-        <width>140</width>
-        <height>32</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>520</x>
-        <y>10</y>
-        <width>81</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Select Task:</string>
-      </property>
-     </widget>
-     <widget class="QOpenGLWidget" name="openGLWidget">
+     <widget class="QWidget" name="gridLayoutWidget">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>511</width>
+        <width>521</width>
         <height>491</height>
        </rect>
       </property>
+      <layout class="QGridLayout" name="gridLayout"/>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>0</y>
+        <width>139</width>
+        <height>491</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_16">
+       <item>
+        <widget class="QPushButton" name="runButton">
+         <property name="text">
+          <string>Run BenchBot</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="clearButton">
+         <property name="text">
+          <string>Clear Space</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="workspaceBox"/>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
@@ -982,7 +976,7 @@ font-size: 18px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>678</width>
+     <width>686</width>
      <height>22</height>
     </rect>
    </property>

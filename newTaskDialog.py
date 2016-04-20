@@ -24,18 +24,19 @@ import json
 
 class Create(QDialog):
 
-    def __init__(self, pyfile, uifile, json_file, parent=None):
+    def __init__(self, parent=None):
         super(Create,self).__init__()
+ 
+     
+    def loadDiag(self,pyfile, uifile, json_file):
 
-        self.pyfile = pyfile
-        self.uifile = uifile
-        self.json_file = json_file
-        print(uifile)
+     	self.pyfile = pyfile
+     	self.uifile = uifile
+     	self.json_file = json_file
 
-        Ui_Dialog, QtBaseClass = uic.loadUiType(uifile)
-        self.diag = Ui_Dialog()
-        self.diag.setupUi(self) 
-
+     	Ui_Dialog, QtBaseClass = uic.loadUiType(uifile)
+     	self.diag = Ui_Dialog()
+     	self.diag.setupUi(self)
 
 
 # main function

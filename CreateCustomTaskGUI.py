@@ -66,10 +66,10 @@ class NewTaskDialogWindow(QDialog):
     def ok_button_clicked(self):
         # code to set the new files will go here
         print(uifile)
-        self.newTask = Create(pyfile,uifile,json_file)
+        self.newTask = Create()
+        self.newTask.loadDiag(pyfile,uifile,json_file)
 
-
-        
+      
 
 # main function
 if __name__ == '__main__':

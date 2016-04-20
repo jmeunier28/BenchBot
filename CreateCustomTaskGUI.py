@@ -21,6 +21,8 @@ from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 import sys
 import json
+import newTaskDialog
+from newTaskDialog import Create
 
 
 class NewTaskDialogWindow(QDialog):
@@ -33,38 +35,42 @@ class NewTaskDialogWindow(QDialog):
 
         #connect dialog buttons
 
-        self.diag.upload_python.clicked.connect(self.upload_python_clicked)
-        self.diag.upload_ui.clicked.connect(self.upload_ui_clicked)
-        self.diag.upload_json.clicked.connect(self.upload_json_clicked)
-        self.diag.buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked)
+        pyfile = self.diag.upload_python.clicked.connect(self.upload_python_clicked)
+        uifile = self.diag.upload_ui.clicked.connect(self.upload_ui_clicked)
+        json_file = self.diag.upload_json.clicked.connect(self.upload_json_clicked)
+        self.diag.buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked(pyfile, uifile,json_file))
 
     def upload_python_clicked(self):
         file_dialog = QFileDialog()
         file_dialog.setFileMode(QFileDialog.AnyFile)
         file = file_dialog.getOpenFileName(self, 'Open Python File', '', "Python Files (*.py)")
-        print ('Path to file is:\n') 
-        print (file)
+        print (file) 
+        return file
 
     def upload_ui_clicked(self):
         file_dialog = QFileDialog()
         file_dialog.setFileMode(QFileDialog.AnyFile)
         file = file_dialog.getOpenFileName(self, 'Open UI File', '', "Ui Files (*.ui)")
-        print ('Path to file is:\n')
         print (file)
+        return file
 
     def upload_json_clicked(self):
         file_dialog = QFileDialog()
         file_dialog.setFileMode(QFileDialog.AnyFile)
         file = file_dialog.getOpenFileName(self, 'Open File', '', "JSON Files (*.json)")
-        file2 = file_dialog.getSaveFileName(self,'Open JSON','',"JSON Files (*.json)")
-        print ('Path to file is:\n')
         print (file)
-        print(file2)
+        return file
 
-    def ok_button_clicked(self):
+    def ok_button_clicked(self,pyfile,uifile,json_file):
         # code to set the new files will go here
-        #self.signal =
-        print ("okay button works")
+        self.pyfile = pyfile
+        self.uifile = uifile
+        self.json_file = json_file
+
+        #self.newTask = Create(self.pyfile,self.uifile,self.json_file)
+
+
+        
 
 # main function
 if __name__ == '__main__':

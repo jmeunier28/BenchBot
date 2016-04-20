@@ -3,6 +3,11 @@
     "collection": "TipBox",
     "parameters": [
       {
+        "3DLocation": {
+          "x": 2.0,
+          "y": -3.0,
+          "z": -8.0
+        },
         "Dimensions": {
           "height": 10,
           "length": 12,
@@ -13,9 +18,9 @@
           "y": 2
         },
         "Location": {
-          "x": 2.0,
-          "y": -3.0,
-          "z": -8.0
+          "x": -45.0,
+          "y": 45.0,
+          "z": 0.0
         },
         "firstTipLocation": {
           "x": 1,
@@ -40,6 +45,11 @@
     "collection": "TubeRack",
     "parameters": [
       {
+        "3DLocation": {
+          "x": 3.0,
+          "y": -2.0,
+          "z": -12.0
+        },
         "Dimensions": {
           "height": 30,
           "length": 6,
@@ -50,9 +60,9 @@
           "y": 2
         },
         "Location": {
-          "x": 3.0,
-          "y": -2.0,
-          "z": -12.0
+          "x": 0.0,
+          "y": 90.0,
+          "z": 0.0
         },
         "firstTipLocation": {
           "x": 1,
@@ -80,6 +90,11 @@
     "collection": "MicroPlate",
     "parameters": [
       {
+        "3DLocation": {
+          "x": 2.0,
+          "y": -3.0,
+          "z": -6.0
+        },
         "Dimensions": {
           "height": 12,
           "length": 4,
@@ -90,9 +105,9 @@
           "y": 2
         },
         "Location": {
-          "x": 2.0,
-          "y": -3.0,
-          "z": -6.0
+          "x": -45.0,
+          "y": -45.0,
+          "z": 0.0
         },
         "firstTipLocation": {
           "x": 1,
@@ -117,6 +132,11 @@
     "collection": "WasteContainer",
     "parameters": [
       {
+        "3DLocation": {
+          "x": 5.0,
+          "y": -3.0,
+          "z": -4.5
+        },
         "Dimensions": {
           "height": 12,
           "length": 5,
@@ -127,9 +147,9 @@
           "y": 2
         },
         "Location": {
-          "x": 5.0,
-          "y": -3.0,
-          "z": -4.5
+          "x": 0.0,
+          "y": -90.0,
+          "z": 0.0
         },
         "containerHole": {
           "x:": 1,
@@ -147,6 +167,11 @@
     "collection": "Robot",
     "parameters": [
       {
+        "3DLocation": {
+          "x": 5.0,
+          "y": 0.0,
+          "z": -8.0
+        },
         "Dimensions": {
           "height": 45,
           "length": 23,
@@ -157,9 +182,9 @@
           "y": 2
         },
         "Location": {
-          "x": 5.0,
+          "x": 0.0,
           "y": 0.0,
-          "z": -8.0
+          "z": 0.0
         }
       }
     ]

@@ -24,11 +24,12 @@ from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QColor
 import DobotInverseKinematics
 import serial.tools.list_ports
-import CreateCustomTaskGUI, ColonyTaskDialogGUI, PCRTaskDialogGUI, drawCubes
+import CreateCustomTaskGUI, ColonyTaskDialogGUI, PCRTaskDialogGUI, drawCubes, get_json_data
 from CreateCustomTaskGUI import NewTaskDialogWindow
 from PCRTaskDialogGUI import PCRTaskDialogWindow
 from ColonyTaskDialogGUI import ColonyTaskDialogWindow
 from drawCubes import glWidget
+from get_json_data import CollectData
 
 class DobotGUIApp(QMainWindow):
     # class initialization function (initialize the GUI)
@@ -43,10 +44,14 @@ class DobotGUIApp(QMainWindow):
 
         self.ui.new_file_action.triggered.connect(self.file_dialog_clicked)
 
-        #tab widgets check name
+        # connect WorkSpace Tab widgets 
+
         self.drawCubes = glWidget()
         self.ui.gridLayout.addWidget(self.drawCubes)
         self.setLayout(self.ui.gridLayout)
+        self.ui.runButton.clicked.connect(self.run_path_way)
+        self.ui.workspaceBox.addItem("PCR")
+        self.ui.workspaceBox.addItem("Cloning")
 
 
         # connect to menubar QAction item options for Task bar Dialog Box
@@ -107,9 +112,17 @@ class DobotGUIApp(QMainWindow):
 
 
     def run_path_way(self):
-        #code to run the robot through specific path that is calculated via a graph
-        #use drawCubes path method to do this
-        pass
+
+        '''
+        Path of robot for now will follow that which is set in the drawCubes python script
+        and shown by the blue line in the WorkSpace tab 3D model 
+        Graph Def:
+        robot_vert[2] -> tube_vert[5] -> tipbox_vert[2] -> micro_vert[1] -> waste_vert[2]
+        if robot clears these verticies it will not hit anything
+
+        '''
+        self.get_data = CollectData()
+        bot_loc, tube_loc, tip_loc, micro_loc, waste_loc = self.get_data.get_real_coordinates()
 
     
     def file_dialog_clicked(self):

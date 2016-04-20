@@ -957,13 +957,6 @@ font-size: 18px;</string>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="clearButton">
-         <property name="text">
-          <string>Clear Space</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QComboBox" name="workspaceBox"/>
        </item>
       </layout>

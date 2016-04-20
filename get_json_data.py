@@ -30,27 +30,49 @@ class CollectData:
 	def get_tipBox_data(self):
 		for objects in self.data:
 			if objects["collection"]== "TipBox":
-				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["3DLocation"]
 
 
 	def get_tubeRack_data(self):
 		for objects in self.data:
 			if objects["collection"] == "TubeRack":
-				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["3DLocation"]
 
 
 	def get_wasteContainer_data(self):
 		for objects in self.data:
 			if objects["collection"] == "WasteContainer":
-				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["3DLocation"]
 
 	def get_microPlate_data(self):
 		for objects in self.data:
 			if objects["collection"] == "MicroPlate":
-				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["3DLocation"]
 	
 	def get_robot_data(self):
 		for objects in self.data:
 			if objects["collection"] == "Robot":
-				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["Location"]
+				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["3DLocation"]
+
+	def get_real_coordinates(self):
+		for oobjects in self.data:
+			if objects["collection"]== "TipBox":
+				tip_loc = objects["parameters"][0]["Location"]
+			if objects["collection"] == "TubeRack":
+				tube_loc = objects["parameters"][0]["Location"]
+			if objects["collection"] == "WasteContainer":
+				waste_loc = objects["parameters"][0]["Location"]
+			if objects["collection"] == "MicroPlate":
+				micro_loc = objects["parameters"][0]["Location"]
+			if objects["collection"] == "Robot":
+				bot_loc = objects["parameters"][0]["Location"]
+
+		return bot_loc, tube_loc, tip_loc, micro_loc, waste_loc
+
+
+
+
+
+
+
 

@@ -16,7 +16,8 @@ It currently generates a json file with the following definitions:
 Tip box object{
     Footprint [x,y]
     Dimensions [length, width, height] //for now, just stick to defining cubes/rectangles
-    Location [x,y,z] //most likely a coordinate of one of the corners of the cube
+    3DLocation [x,y,z] //coordinate location that can be rendered by opengl
+    Location [x,y,z] //top right corner of cube (this is the position that will be taken when finding the path the robot takes)
     Number of tips = 96 //alternatively, this can be calculated from the tip grid dimensions. might as well include it though.
     Tip Grid Dimensions [8 rows, 12 columns]//the tips in a tip box are arranged in a grid
     Tip spacing [row spacing, column spacing]
@@ -26,6 +27,7 @@ Tip box object{
 Waste Container{
     Footprint [x,y]
     Dimensions [length, width, height]
+    3DLocation [x,y,z]
     Location [x,y,z]
     Container hole dimensions [x,y]
     Relative location of hole edge[x,y,]
@@ -34,6 +36,7 @@ Waste Container{
 Tube rack{
     Footprint [x,y]
     Dimensions [length, width, height]
+    3DLocation [x,y,z]
     Location [x,y,z]
     Number of wells = 90
     Well Grid Dimensions [5 rows, 18 columns]
@@ -45,6 +48,7 @@ Tube rack{
 Microplate{
     Footprint [x,y]
     Dimensions [length, width, height]
+    3DLocation [x,y,z]
     Location [x,y,z]
     Number of wells = 96
     Well Grid Dimensions [8 rows, 12 columns]
@@ -81,14 +85,15 @@ class JSON:
 
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":12,"width":12,"height":10}
-		Location = {"x":2.0,"y":-3.0,"z":-8.0}
+		threeDLocation = {"x":2.0,"y":-3.0,"z":-8.0}
+		Location = {"x":-45.0,"y":45.0,"z":0.0}
 		tipNum = {"tip_number":96}
 		gridDimensions = {"rows":8,"columns":12}
 		tipSpacing = {"row_spacing":2, "column_spacing":2}
 		firstTipLocation = {"x":1,"y":1,"z":1}
 
 		tipBoxObject = [{"Footprint": Footprint,"Dimensions":Dimensions,
-						"Location":Location,"tipNum":tipNum,"gridDimensions":gridDimensions,
+						"3DLocation":threeDLocation,"Location":Location,"tipNum":tipNum,"gridDimensions":gridDimensions,
 						"tipSpacing":tipSpacing,"firstTipLocation":firstTipLocation}]
 
 		self.data = {"collection": "TipBox","parameters":tipBoxObject}
@@ -99,7 +104,8 @@ class JSON:
 
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":6,"width":30,"height":30}
-		Location = {"x":3.0,"y":-2.0,"z":-12.0}
+		threeDLocation = {"x":3.0,"y":-2.0,"z":-12.0}
+		Location = {"x":0.0,"y":90.0,"z":0.0}
 		wellNum = {"well_number":90}
 		gridDimensions = {"rows":5,"columns":18}
 		wellSpacing = {"row_spacing":2, "column_spacing":2}
@@ -107,7 +113,7 @@ class JSON:
 		tubeHeight = {"height":20}
 
 		tubeRackObject = [{"Footprint": Footprint,"Dimensions":Dimensions,
-						"Location":Location,"tipNum":wellNum,"gridDimensions":gridDimensions,
+						"3DLocation":threeDLocation,"Location":Location,"tipNum":wellNum,"gridDimensions":gridDimensions,
 						"tipSpacing":wellSpacing,"firstTipLocation":firstWellLocation,"tubeHeight":tubeHeight}]
 
 		self.data = {"collection":"TubeRack", "parameters":tubeRackObject}
@@ -119,12 +125,13 @@ class JSON:
 		
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":5,"width":12,"height":12}
-		Location = {"x":5.0,"y":-3.0,"z":-4.5}
+		threeDLocation = {"x":5.0,"y":-3.0,"z":-4.5}
+		Location = {"x":0.0,"y":-90.0,"z":0.0}
 		containerHole = {"x:":1, "y":1}
 		holeEdgePosition = {"x":1,"y":1,"z":1}
 
 		wasteContainerObject = [{"Footprint": Footprint,"Dimensions":Dimensions,
-						"Location":Location,"containerHole":containerHole,"holeEdgePosition":holeEdgePosition}]
+						"3DLocation":threeDLocation,"Location":Location,"containerHole":containerHole,"holeEdgePosition":holeEdgePosition}]
 
 		self.data = {"collection":"WasteContainer", "parameters":wasteContainerObject}
 		JSON.data_array.append(self.data)
@@ -134,14 +141,15 @@ class JSON:
 		
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":4,"width":12,"height":12}
-		Location = {"x":2.0,"y":-3.0,"z":-6.0}
+		threeDLocation = {"x":2.0,"y":-3.0,"z":-6.0}
+		Location = {"x":-45.0,"y":-45.0,"z":0.0}
 		wellNum = {"tip_number":96}
 		gridDimensions = {"rows":8,"columns":12}
 		wellSpacing = {"row_spacing":2, "column_spacing":2}
 		firstWellLocation = {"x":1,"y":1,"z":1}
 
 		microPlateObject = [{"Footprint": Footprint,"Dimensions":Dimensions,
-						"Location":Location,"tipNum":wellNum,"gridDimensions":gridDimensions,
+						"3DLocation":threeDLocation,"Location":Location,"tipNum":wellNum,"gridDimensions":gridDimensions,
 						"tipSpacing":wellSpacing,"firstTipLocation":firstWellLocation}]
 
 		self.data = {"collection":"MicroPlate","parameters":microPlateObject}
@@ -151,10 +159,10 @@ class JSON:
 
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":23,"width":12,"height":45}
-		Location = {"x":5.0,"y":0.0,"z":-8.0}
-
+		threeDLocation = {"x":5.0,"y":0.0,"z":-8.0}
+		Location = {"x":0.0,"y":0.0,"z":0.0}
 		robotObject = [{"Footprint": Footprint,"Dimensions":Dimensions,
-						"Location":Location}]
+						"3DLocation":threeDLocation,"Location":Location}]
 
 		self.data = {"collection": "Robot","parameters":robotObject}
 		JSON.data_array.append(self.data)

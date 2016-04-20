@@ -200,7 +200,7 @@ class glWidget(QGLWidget):
     def find_path(self):
         '''
         Path way graph definition:
-        robot_vert[4] -> tipbox_vert[1] -> tuberack_vert[5] -> micro_vert[1] -> waste_vert[1]
+        robot_vert[2] -> tube_vert[5] -> tipbox_vert[2] -> micro_vert[1] -> waste_vert[2]
         if robot clears these verticies it will not hit anything
         
         '''
@@ -237,9 +237,23 @@ class glWidget(QGLWidget):
         itermediate_vert.append((robot_vert[2][2]+robot_vert[7][2]) / 2 + robot_loc[2])''' #add intermediate step at some point
 
         lines = (robot_vert[2],tube_vert[5],tipbox_vert[2],micro_vert[1],waste_vert[2])
-        path_way = ((0,1),(1,2),(2,3),(3,4),(4,5))
+        path_way = ((0,1),(1,2),(2,3),(3,4))
 
         return lines, path_way
+
+    '''def label_stuff(self, x,  y, z, font, text, r,  g , b , a):
+
+        blending = False
+        if glIsEnabled(GL_BLEND):
+            blending = True
+
+        glColor3f(1,1,1)
+        glWindowPos2fv(x,y,z)
+        for ch in text:
+            glutBitmapCharacter(font , ctypes.c_int(ord(ch)))
+        
+        if not blending:
+            glDisable(GL_BLEND)'''
 
     def paintGL(self):
 
@@ -259,6 +273,7 @@ class glWidget(QGLWidget):
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         for i in range(0, len(vert_data)):
+            glLineWidth(1)
             glLoadIdentity()
             glTranslatef(local_data[i][0],local_data[i][1],local_data[i][2])
             glBegin(GL_LINES)
@@ -270,12 +285,16 @@ class glWidget(QGLWidget):
         #draw path to show user how robot will travel:
         lines, path_way = self.find_path()
         glLoadIdentity()
+        glLineWidth(2)
         glBegin(GL_LINES)
         for path in path_way:
             for line in path:
                 glColor3f(0,0,1) #draw the pathway blue
                 glVertex3fv(lines[line])
         glEnd()
+
+        #self.label_stuff(1.0, 1.0,1.0, GLUT_BITMAP_9_BY_15 , "Hallo World" , 1.0 , 1.0 , 1.0 , 1.0)
+
         glutSwapBuffers()
 
 
@@ -284,7 +303,7 @@ class glWidget(QGLWidget):
         glClearDepth(1.0) 
         glLoadIdentity()
         glMatrixMode(GL_PROJECTION)
-        gluPerspective(120.0,680/480,.1,50.0)
+        gluPerspective(100.0,680/480,.1,50.0)
         glDepthFunc(GL_LESS)
         glEnable(GL_DEPTH_TEST)
         glShadeModel(GL_SMOOTH)   

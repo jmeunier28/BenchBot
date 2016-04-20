@@ -63,14 +63,10 @@ class DobotGUIApp(QMainWindow):
         self.ui.new_cloning_task_action.triggered.connect(self.new_task.show) 
         hello = self.ui.new_pcr_cloning_task_action
         hello.triggered.connect(self.task.show)
-        #primer, samples = hello.triggered.connect(self.task.get_values())
+        #primer, samples = self.task.ok_button_clicked
 
-
-        self.ui.mike_pcr_cloning_task_action.triggered.connect(self.task.show)
-        self.ui.jojo_pcr_cloning_task_action.triggered.connect(self.task.show)
         self.ui.new_colony_cloning_task_action.triggered.connect(self.task2.show)
-        self.ui.mike_colony_cloning_task_action.triggered.connect(self.task2.show)
-        self.ui.jojo_colony_cloning_task_action.triggered.connect(self.task2.show)
+
 
 
         # connect serial ports list refresh button clicked event to the update serial port list function

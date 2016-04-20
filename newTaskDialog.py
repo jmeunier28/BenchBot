@@ -22,7 +22,7 @@ import sys
 import json
 
 
-class Create:
+class Create(QDialog):
 
     def __init__(self, pyfile, uifile, json_file, parent=None):
         super(Create,self).__init__()
@@ -30,7 +30,17 @@ class Create:
         self.pyfile = pyfile
         self.uifile = uifile
         self.json_file = json_file
+        print(uifile)
 
-        Ui_Dialog, QtBaseClass = uic.loadUiType('CreateCustomTask.ui')
+        Ui_Dialog, QtBaseClass = uic.loadUiType(uifile)
         self.diag = Ui_Dialog()
-        self.diag.setupUi(self)
+        self.diag.setupUi(self) 
+
+
+
+# main function
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = Create()
+    window.show()
+    sys.exit(app.exec_())

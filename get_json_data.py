@@ -55,7 +55,7 @@ class CollectData:
 				return objects["parameters"][0]["Dimensions"], objects["parameters"][0]["3DLocation"]
 
 	def get_real_coordinates(self):
-		for oobjects in self.data:
+		for objects in self.data:
 			if objects["collection"]== "TipBox":
 				tip_loc = objects["parameters"][0]["Location"]
 			if objects["collection"] == "TubeRack":

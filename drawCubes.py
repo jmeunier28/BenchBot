@@ -285,7 +285,7 @@ class glWidget(QGLWidget):
         #draw path to show user how robot will travel:
         lines, path_way = self.find_path()
         glLoadIdentity()
-        glLineWidth(2)
+        glLineWidth(5)
         glBegin(GL_LINES)
         for path in path_way:
             for line in path:

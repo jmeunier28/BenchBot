@@ -106,20 +106,6 @@ class DobotGUIApp(QMainWindow):
         # populate the serial ports list widget
         self.update_serial_port_list()
 
-
-    def run_path_way(self):
-
-        '''
-        Path of robot for now will follow that which is set in the drawCubes python script
-        and shown by the blue line in the WorkSpace tab 3D model 
-        Graph Def:
-        robot_vert[2] -> tube_vert[5] -> tipbox_vert[2] -> micro_vert[1] -> waste_vert[2]
-        if robot clears these verticies it will not hit anything
-
-        '''
-        self.get_data = CollectData()
-        bot_loc, tube_loc, tip_loc, micro_loc, waste_loc = self.get_data.get_real_coordinates()
-
     
     def file_dialog_clicked(self):
 
@@ -155,6 +141,66 @@ class DobotGUIApp(QMainWindow):
             return
 
         self.move_to_cartesian_coordinate(moveToXFloat, moveToYFloat, moveToZFloat)
+
+    def run_path_way(self):
+
+        '''
+        Path of robot for now will follow that which is set in the drawCubes python script
+        and shown by the blue line in the WorkSpace tab 3D model 
+        Graph Def:
+        robot_vert[2] -> tube_vert[5] -> tipbox_vert[2] -> micro_vert[1] -> waste_vert[2]
+        if robot clears these verticies it will not hit anything
+
+        '''
+        self.get_data = CollectData()
+        self.get_data.loadfile()
+        #get coordinate locations of each item
+        bot_loc, tube_loc, tip_loc, micro_loc, waste_loc = self.get_data.get_real_coordinates()
+        location_array = [bot_loc,tube_loc,tip_loc,micro_loc,waste_loc]
+        logic_array = [True, False]
+
+        for i in range(0,len(location_array)-1):
+            for i in range(0,len(logic_array)):
+                self.defined_path(location_array[i],location_array[i+1],logic_array[i])
+        #last call puts robot back at initial position
+        self.defined_path(waste_loc,bot_loc,reverse=True)
+
+
+    def defined_path(self,move_from,move_to,reverse):
+
+        '''
+        coordinates are defined at location of right hand corner of object 
+        pathways are defined by graph
+        when reverse is set to True move_to position will move back to move_from position
+        when reverse is set to False the robot will move from location one
+        to location two with forward movements
+
+        '''
+        self.location_one= move_from #initial pos
+        self.location_two = move_to #move to this pos
+        self.reverse = reverse
+
+        if self.reverse is False:
+
+            print("Setting BenchBot initial Location...")
+            currentXPosition = self.location_one["x"]
+            currentYPosition = self.location_one["y"]
+            currentZPosition =self.location_one["z"]
+            self.move_to_cartesian_coordinate(currentXPosition,currentYPosition,currentZPosition)
+
+            print("Moving BenchBot forward to new location")
+            newXPosition = self.location_two["x"]
+            newYPosition = self.location_two["y"]
+            newZPosition = self.location_two["z"]
+            self.move_to_cartesian_coordinate(newXPosition,newYPosition,newZPosition)
+            
+        elif self.reverse is True:
+            print("Setting BenchBot now...")
+
+            currentXPosition = self.location_one["x"]
+            currentYPosition = self.location_one["y"]
+            currentZPosition =self.location_one["z"]
+            self.move_to_cartesian_coordinate(currentXPosition,currentYPosition,currentZPosition)
 
 
     def move_to_cartesian_coordinate(self, moveToXFloat, moveToYFloat, moveToZFloat):

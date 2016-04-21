@@ -38,6 +38,7 @@ class NewTaskDialogWindow(QDialog):
         self.diag.upload_python.clicked.connect(self.upload_python_clicked)
         self.diag.upload_ui.clicked.connect(self.upload_ui_clicked)
         self.diag.upload_json.clicked.connect(self.upload_json_clicked)
+
         self.diag.buttonBox.button(QDialogButtonBox.Ok).clicked.connect(self.ok_button_clicked)
 
     def upload_python_clicked(self):

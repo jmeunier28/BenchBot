@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <property name="usesScrollButtons">
      <bool>false</bool>
@@ -90,6 +90,12 @@
             </item>
             <item>
              <widget class="QLineEdit" name="lineEditStepUpSize">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>6</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
                <string>20</string>
               </property>
@@ -139,9 +145,9 @@
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
-         <x>21</x>
+         <x>1</x>
          <y>20</y>
-         <width>191</width>
+         <width>231</width>
          <height>210</height>
         </rect>
        </property>

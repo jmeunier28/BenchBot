@@ -16,7 +16,6 @@ not a biologist so idk if thats right
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
-from vispy.gloo import Program, VertexBuffer, IndexBuffer
 from PyQt5.QtOpenGL import *
 from PyQt5.QtCore import pyqtSignal, QPoint, QSize, Qt
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QListWidget, QListWidgetItem, QFileDialog, QWidget,
@@ -46,6 +45,20 @@ class glWidget(QGLWidget):
     
     def __init__(self, parent = None):
         super(glWidget, self).__init__(parent)
+
+    def big_cube(self):
+        scale = 30.0
+        verticies = (
+            (scale,-scale,-scale*3),
+            (scale,scale,-scale*3),
+            (-scale,scale,-scale*3),
+            (-scale,-scale,-scale*3),
+            (scale,-scale,scale*3),
+            (scale,scale,scale*3),
+            (-scale,-scale,scale*3),
+            (-scale,scale,scale*3)
+            )
+        return verticies
 
     def robot_cube(self):
 
@@ -291,6 +304,17 @@ class glWidget(QGLWidget):
                 glVertex3fv(lines[line])
         glEnd()
 
+        #draw big cube to make look 3D:
+        '''verticies = self.big_cube()
+        glLoadIdentity()
+        glLineWidth(2)
+        #glTranslatef(0.0,0.0,-15.0)
+        glBegin(GL_LINES)
+        for edge in edges:
+            for vertex in edge:
+                glColor3f(1,1,1)
+                glVertex3fv(verticies[vertex])
+        glEnd()'''
         #self.label_stuff(1.0, 1.0,1.0, GLUT_BITMAP_9_BY_15 , "Hallo World" , 1.0 , 1.0 , 1.0 , 1.0)
 
         glutSwapBuffers()

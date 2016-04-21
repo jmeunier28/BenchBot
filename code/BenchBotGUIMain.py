@@ -157,13 +157,14 @@ class DobotGUIApp(QMainWindow):
         #get coordinate locations of each item
         bot_loc, tube_loc, tip_loc, micro_loc, waste_loc = self.get_data.get_real_coordinates()
         location_array = [bot_loc,tube_loc,tip_loc,micro_loc,waste_loc]
-        logic_array = [True, False]
+        logic_array = [False, True]
+        self.defined_path(location_array[0],location_array[1],reverse=False)
 
-        for i in range(0,len(location_array)-1):
+        '''for i in range(0,len(location_array)-1):
             for i in range(0,len(logic_array)):
                 self.defined_path(location_array[i],location_array[i+1],logic_array[i])
         #last call puts robot back at initial position
-        self.defined_path(waste_loc,bot_loc,reverse=True)
+        self.defined_path(waste_loc,bot_loc,reverse=True)'''
 
 
     def defined_path(self,move_from,move_to,reverse):
@@ -186,7 +187,7 @@ class DobotGUIApp(QMainWindow):
             currentXPosition = self.location_one["x"]
             currentYPosition = self.location_one["y"]
             currentZPosition =self.location_one["z"]
-            self.move_to_cartesian_coordinate(currentXPosition,currentYPosition,currentZPosition)
+            #self.move_to_cartesian_coordinate(currentXPosition,currentYPosition,currentZPosition)
 
             print("Moving BenchBot forward to new location")
             newXPosition = self.location_two["x"]

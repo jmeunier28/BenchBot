@@ -30,6 +30,7 @@ from PCRTaskDialogGUI import PCRTaskDialogWindow
 from ColonyTaskDialogGUI import ColonyTaskDialogWindow
 from drawCubes import glWidget
 from get_json_data import CollectData
+import time
 
 class DobotGUIApp(QMainWindow):
     # class initialization function (initialize the GUI)
@@ -157,14 +158,13 @@ class DobotGUIApp(QMainWindow):
         #get coordinate locations of each item
         bot_loc, tube_loc, tip_loc, micro_loc, waste_loc = self.get_data.get_real_coordinates()
         location_array = [bot_loc,tube_loc,tip_loc,micro_loc,waste_loc]
-        logic_array = [False, True]
-        self.defined_path(location_array[0],location_array[1],reverse=False)
+        logic_array = [False,True]
 
-        '''for i in range(0,len(location_array)-1):
-            for i in range(0,len(logic_array)):
-                self.defined_path(location_array[i],location_array[i+1],logic_array[i])
+        for i in range(0,len(location_array)-1):
+            for j in range(0,len(logic_array)):
+                self.defined_path(location_array[0],location_array[i+1],logic_array[j])
         #last call puts robot back at initial position
-        self.defined_path(waste_loc,bot_loc,reverse=True)'''
+        self.defined_path(bot_loc,waste_loc,reverse=True)
 
 
     def defined_path(self,move_from,move_to,reverse):
@@ -183,16 +183,11 @@ class DobotGUIApp(QMainWindow):
 
         if self.reverse is False:
 
-            print("Setting BenchBot initial Location...")
-            currentXPosition = self.location_one["x"]
-            currentYPosition = self.location_one["y"]
-            currentZPosition =self.location_one["z"]
-            #self.move_to_cartesian_coordinate(currentXPosition,currentYPosition,currentZPosition)
-
             print("Moving BenchBot forward to new location")
             newXPosition = self.location_two["x"]
             newYPosition = self.location_two["y"]
             newZPosition = self.location_two["z"]
+            print("sending robot to %f %f %f" % (newXPosition,newYPosition,newZPosition))
             self.move_to_cartesian_coordinate(newXPosition,newYPosition,newZPosition)
             
         elif self.reverse is True:
@@ -209,6 +204,8 @@ class DobotGUIApp(QMainWindow):
         # moveToAngles is a list of angles (type float) with the following order: [base angle, upper arm angle, lower arm angle]
         # catch any errors (likely due to coordinates out of range being input) NEED TO ADDRESS THIS AT SOME POINT
         try:
+            print("move to coord func recieves these values:\n")
+            print(moveToXFloat, moveToYFloat,moveToZFloat)
             moveToAngles = DobotInverseKinematics.convert_cartesian_coordinate_to_arm_angles(moveToXFloat,moveToYFloat,moveToZFloat,
             DobotInverseKinematics.lengthUpperArm, DobotInverseKinematics.lengthLowerArm, DobotInverseKinematics.heightFromBase)
         except Exception as e:
@@ -266,7 +263,7 @@ class DobotGUIApp(QMainWindow):
         # I'm simply writing three floats to the arduino. See the following two stack exchange posts for more details on this:
         # http://arduino.stackexchange.com/questions/5090/sending-a-floating-point-number-from-python-to-arduino
         # ttps://arduino.stackexchange.com/questions/3753/how-to-send-numbers-to-arduino-uno-via-python-3-and-the-module-serial
-        self.arduinoSerial.write( struct.pack('f',moveToAngles[0]) )
+        self.arduinoSerial.write( struct.pack('f', moveToAngles[0]))
         self.arduinoSerial.write( struct.pack('f',transformedUpperArmAngle) )
         self.arduinoSerial.write( struct.pack('f',transformedLowerArmAngle) )
 
@@ -286,8 +283,10 @@ class DobotGUIApp(QMainWindow):
         # code for debugging purposes. the firmware I am using (at time of writing this) is set up to print the 3 angles it read to the serial
         # this reads the 3 angles that the arduino printed from the serial. There is certainly a better way to do this.
         # this was quick and dirty and is prone to fatal errors (fatal for this program that is).
-        for i in range(0,15 ):
+        print("i am before the for loop")
+        for i in range(0,15):
             print ( self.arduinoSerial.readline() )
+        print("i am after the for loop")
 
 
 
@@ -360,8 +359,8 @@ class DobotGUIApp(QMainWindow):
         # code for debugging purposes. the firmware I am using (at time of writing this) is set up to print the 3 angles it read to the serial
         # this reads the 3 angles that the arduino printed from the serial. There is certainly a better way to do this.
         # this was quick and dirty and is prone to fatal errors (fatal for this program that is).
-        for i in range(0,15 ):
-            print ( self.arduinoSerial.readline() )
+        #for i in range(0,15 ):
+        #    print ( self.arduinoSerial.readline() )
 
 
     # angles passed as arguments here should be real world angles (horizontal = 0, below is negative, above is positive)

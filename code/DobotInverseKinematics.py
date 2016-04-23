@@ -9,12 +9,7 @@ License: MIT
 """
 
 
-
-
-
 import math
-
-
 
 
 """

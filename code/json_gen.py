@@ -74,19 +74,19 @@ class JSON:
 	data_array = []
 
 	def __init__(self):
-		print ("\nInitializing new json object..")
+		#print ("\nInitializing new json object..")
 
 	def loadfile(self):
 		with open(JSON.filepath) as data_file:
 			self.data = json.load(data_file)
-		print ("loaded json file to edit...")
+		#print ("loaded json file to edit...")
 
 	def write_tip_box(self):
 
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":12,"width":12,"height":10}
 		threeDLocation = {"x":2.0,"y":-3.0,"z":-8.0}
-		Location = {"x":-45.0,"y":45.0,"z":0.0}
+		Location = {"x":160.0,"y":50.0,"z":215.0}
 		tipNum = {"tip_number":96}
 		gridDimensions = {"rows":8,"columns":12}
 		tipSpacing = {"row_spacing":2, "column_spacing":2}
@@ -105,7 +105,7 @@ class JSON:
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":6,"width":30,"height":30}
 		threeDLocation = {"x":3.0,"y":-2.0,"z":-12.0}
-		Location = {"x":0.0,"y":90.0,"z":0.0}
+		Location = {"x":160.0,"y":0.0,"z":115.0}
 		wellNum = {"well_number":90}
 		gridDimensions = {"rows":5,"columns":18}
 		wellSpacing = {"row_spacing":2, "column_spacing":2}
@@ -126,7 +126,7 @@ class JSON:
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":5,"width":12,"height":12}
 		threeDLocation = {"x":5.0,"y":-3.0,"z":-4.5}
-		Location = {"x":0.0,"y":-90.0,"z":0.0}
+		Location = {"x":0.0,"y":100.0,"z":50.0}
 		containerHole = {"x:":1, "y":1}
 		holeEdgePosition = {"x":1,"y":1,"z":1}
 
@@ -142,7 +142,7 @@ class JSON:
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":4,"width":12,"height":12}
 		threeDLocation = {"x":2.0,"y":-3.0,"z":-6.0}
-		Location = {"x":-45.0,"y":-45.0,"z":0.0}
+		Location = {"x":150.0,"y":100.0,"z":180.0}
 		wellNum = {"tip_number":96}
 		gridDimensions = {"rows":8,"columns":12}
 		wellSpacing = {"row_spacing":2, "column_spacing":2}
@@ -160,7 +160,7 @@ class JSON:
 		Footprint = {"x":1,"y":2}
 		Dimensions = {"length":23,"width":12,"height":45}
 		threeDLocation = {"x":5.0,"y":0.0,"z":-8.0}
-		Location = {"x":0.0,"y":0.0,"z":0.0}
+		Location = {"x":160.0,"y":0.0,"z":215.0}
 		robotObject = [{"Footprint": Footprint,"Dimensions":Dimensions,
 						"3DLocation":threeDLocation,"Location":Location}]
 

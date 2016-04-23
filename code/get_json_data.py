@@ -20,12 +20,13 @@ class CollectData:
 	data_array = []
 
 	def __init__(self):
-		print("\ngrabbing data from task.json")
+		#print("\ngrabbing data from task.json")
+		pass
 
 	def loadfile(self):
 		with open(CollectData.filepath) as data_file:
 			self.data = json.load(data_file)
-		print ("loaded json file to edit...")
+		#print ("loaded json file to edit...")
 
 	def get_tipBox_data(self):
 		for objects in self.data:

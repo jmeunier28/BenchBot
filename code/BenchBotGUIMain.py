@@ -32,6 +32,7 @@ from drawCubes import glWidget
 from get_json_data import CollectData
 import time
 import math
+import itertools
 
 class DobotGUIApp(QMainWindow):
     # class initialization function (initialize the GUI)
@@ -145,7 +146,37 @@ class DobotGUIApp(QMainWindow):
 
         self.move_to_cartesian_coordinate(moveToXFloat, moveToYFloat, moveToZFloat)
 
+    def define_threeDspace(self):
+
+        '''
+
+        Robot is free to move within this 3D space 
+
+        '''
+        #i made these up come back later to calibrate actual space
+
+        minimumX = -180
+        minimumY = -180
+        minimumZ = -100
+        maximumX = 180
+        maximumY = 180
+        maximumZ = 250
+
+        diffX = maximumX - minimumX
+        diffY = maximumY - minimumY
+        diffZ = maximumZ - minimumZ
+        nodes = []
+
+        for x in range(0,diffX):
+            for y in range(0,diffY):
+                for z in range(0,diffZ):
+                    nodes.append([x,y,z]) #add all nodes in space to list
+        return nodes
+
+
+
     def set_path_boundaries(self):
+
         '''
 
         Implement checks to ensure robot does not hit things that we do not want it to hit
@@ -156,6 +187,8 @@ class DobotGUIApp(QMainWindow):
         ***** Assumed that user defined coordinates are the upper left hand corner of each box ****
 
         '''
+
+        space = self.define_threeDspace()
 
         #get coordinate locations of objects in standard json file
         self.get_data = CollectData()
@@ -178,11 +211,16 @@ class DobotGUIApp(QMainWindow):
         for i in range(0,len(location_array)):
             for j in range(0,4):
                 coordinates = self.create_twoDbox(dimension_array[i],location_array[i])
-                all_nodes.append([coordinates[j][0],coordinates[j][1], location_array[i]["z"]]) #add all new x,y coords of boxes in our path
+                all_nodes.append([coordinates[j][0],coordinates[j][1], location_array[i]["z"]-1]) #add all new x,y coords of boxes in our path
 
-        return all_nodes
+        for i in range(0,len(all_nodes)):
+            if all_nodes[i] in space:
+                space.remove(all_nodes[i])
+
+        return space #return space in which robot is allowed to travel including defined obstacles
 
     def create_twoDbox(self, dimensions, location):
+
         '''
         Map length and width of object to make 2D square 
         return the coordinate locations of the four corners
@@ -202,6 +240,7 @@ class DobotGUIApp(QMainWindow):
         #print("box dimensions are:\n")
         #print(initialCoord,upper_right_vert,lower_left_vert,lower_right_vert)
         coordinate_array = [initialCoord,upper_right_vert,lower_right_vert,lower_left_vert]
+        
         return coordinate_array
 
 
@@ -209,6 +248,7 @@ class DobotGUIApp(QMainWindow):
     def run_path_way(self):
 
         '''
+
         Path of robot for now will follow that which is set in the drawCubes python script
         and shown by the blue line in the WorkSpace tab 3D model 
         Graph Def:
@@ -216,6 +256,7 @@ class DobotGUIApp(QMainWindow):
         if robot clears these verticies it will not hit anything
 
         '''
+
         self.get_data = CollectData()
         self.get_data.loadfile()
         #get coordinate locations of each item
@@ -233,6 +274,7 @@ class DobotGUIApp(QMainWindow):
     def defined_path(self,move_from,move_to,reverse):
 
         '''
+
         coordinates are defined at location of right hand corner of object 
         pathways are defined by graph
         when reverse is set to True move_to position will move back to move_from position
@@ -243,113 +285,212 @@ class DobotGUIApp(QMainWindow):
         self.location_one= move_from #initial pos
         self.location_two = move_to #move to this pos
         self.reverse = reverse
+        stop = False
 
-        if self.reverse is False:
+        result = self.check_path(location_one,location_two)
+        if result:
+            stop = True
+            print("BenchBot is redirecting path...")
+            old_location, new_location = self.fix_path(location_two["x"],location_two["y"],location_two["z"])
+            self.defined_path(new_location, old_location, reverse=False) #recursively call to move again once object has been avoided
 
-            print("Moving BenchBot forward to new location")
-            newXPosition = self.location_two["x"]
-            newYPosition = self.location_two["y"]
-            newZPosition = self.location_two["z"]
-            print("sending robot to %f %f %f" % (newXPosition,newYPosition,newZPosition))
-            self.move_to_cartesian_coordinate(newXPosition,newYPosition,newZPosition)
-            
-        elif self.reverse is True:
-            print("Setting BenchBot now...")
+        if not stop:
+            if self.reverse is False:
 
-            currentXPosition = self.location_one["x"]
-            currentYPosition = self.location_one["y"]
-            currentZPosition =self.location_one["z"]
-            self.move_to_cartesian_coordinate(currentXPosition,currentYPosition,currentZPosition)
+                newXPosition = self.location_two["x"]
+                newYPosition = self.location_two["y"]
+                newZPosition = self.location_two["z"]
+                print("sending robot to %f %f %f" % (newXPosition,newYPosition,newZPosition))
+                self.move_to_cartesian_coordinate(newXPosition,newYPosition,newZPosition)
+                
+            elif self.reverse is True:
+                print("Setting BenchBot now...")
 
+                currentXPosition = self.location_one["x"]
+                currentYPosition = self.location_one["y"]
+                currentZPosition =self.location_one["z"]
+                self.move_to_cartesian_coordinate(currentXPosition,currentYPosition,currentZPosition)
+
+    def check_points(self, loc_one,loc_two,point):
+
+        '''
+
+        Method that checks if point in 3d space lies between the start location and end 
+        location. if it does the var is set to True. If it does not returns False
+
+        '''
+
+        result = cross_product(loc_one,loc_two,point)
+        var = False
+        if result == 0:
+            result = self.dot_product(loc_one,loc_two,point)
+            if result > 0:
+                distance = self.distance(loc_one,loc_two)
+                if result < math.pow(distance,2):
+                    var = True
+        return var
+    
+    def check_path(self,move_from,move_to):
+
+        '''
+
+        Check the path between two points if there exists obstacles in 
+        between Bench Bot must stop and be redirected
+
+        '''
+
+        self.x_orig = move_from["x"]
+        self.y_orig = move_from["y"]
+        self.z_orig = move_from["z"]
+
+        self.x_new = move_to["x"]
+        self.y_new = move_to["y"]
+        self.z_new = move_to["z"]
+
+        loc_one = [x_orig,y_orig,z_orig]
+        loc_two = [x_new,y_new,z_new]
+        avaliable_space = self.set_path_boundaries()
+        for i in range(0,len(avaliable_space)):
+            self.check_points(loc_one,loc_two,avaliable_space[i])
+
+
+
+    def fix_path(self, x,y,z):
+        
+        '''
+
+        Take the location user is trying to move to and factor in obstacles 
+        present... we will find the best way to move up and around the obstacle 
+        so as to not move through the obstacle 
+
+        '''
+        coordinates = [x,y,z]
+        space = self.set_path_boundaries()
+        for i in range(0,len(space)):
+            mindistance = 10000 #some very high number
+            if self.distance(coordinates,space[i]) < mindistance:
+                mindistance = self.distance(coordinates,space[i])
+            else:
+                # if the minimum distance from free space to blocked space is at minimum 
+                # then we can travel to that coordinate
+                newXcoord = space[i][0]
+                newYcoord = space[i][1]
+                newZcoord = space[i][2]
+        
+        coordDict = {"x":newXcoord,"y":newYcoord,"z":newZcoord}
+        oldCoordDict = {"x":x,"y":y,"z":z}
+
+        self.defined_path(oldCoordDict,coordDict) #now move to this location to avoid obstacle 
+        return oldCoordDict, coordDict
+
+
+    def distance(self,p0,p1):
+        return math.sqrt(math.pow(p1[0]-p0[0])+math.pow(p1[1]-p0[1])+math.pow(p1[2]-p0[2]))
+
+    def cross_product(self,p0,p1):
+        return list(itertools.product(p0,p1))
+
+    def dot_product(self,p0,p1):
+        return sum(p*q for p,q in zip(p0, p1))
 
     def move_to_cartesian_coordinate(self, moveToXFloat, moveToYFloat, moveToZFloat):
-         # call inverse kinematics function to convert from cartesian coordinates to angles for Dobot arm
+        
+        # call inverse kinematics function to convert from cartesian coordinates to angles for Dobot arm
         # moveToAngles is a list of angles (type float) with the following order: [base angle, upper arm angle, lower arm angle]
         # catch any errors (likely due to coordinates out of range being input) NEED TO ADDRESS THIS AT SOME POINT
-        try:
-            print("move to coord func recieves these values:\n")
-            print(moveToXFloat, moveToYFloat,moveToZFloat)
-            moveToAngles = DobotInverseKinematics.convert_cartesian_coordinate_to_arm_angles(moveToXFloat,moveToYFloat,moveToZFloat,
-            DobotInverseKinematics.lengthUpperArm, DobotInverseKinematics.lengthLowerArm, DobotInverseKinematics.heightFromBase)
-        except Exception as e:
-            self.show_a_warning_message_box('Unknown inverse kinematics error. Check that your coordinate values are within the robot\'s range. '
-                                            + 'The error is shown below:',
-                                                repr(e),
-                                                'Inverse Kinematics Error')
-            return
+        stop = False
+        coord_location = [moveToXFloat,moveToYFloat,moveToZFloat]
+        nodes = self.set_path_boundaries()
+        '''for i in range(0,len(nodes)):
+            if (coord_location[0] == nodes[i][0]) and (coord_location[1] == nodes[i][1]) and (coord_location[2] == nodes[i][2]):
+                print("BenchBot trying to access location that has an obstacle...will redirect path")
+                stop = True
+                node_list = [nodes[i][0],nodes[i][1],nodes[i][2]]
+                self.fix_path(moveToXFloat,moveToYFloat,moveToZFloat)'''
 
 
-        # check that inverse kinematics did not run into a range error. If it does, it should return -999 for all angles, so check that.
-        if(moveToAngles[0] == -999):
-            self.show_a_warning_message_box('Desired coordinate is outside of the robot\'s range.',
-                                                'It is impossible for the robot arm to reach the coordinate you specified. Build longer arms if this range is desired.'
-                                                + 'You will probably need higher torque stepper motors as well.',
-                                                'Inverse Kinematics Range Error')
-            return
-
-        print('ik base angle')
-        print(moveToAngles[0])
-        print('ik upper angle')
-        print(moveToAngles[1])
-        print('ik lower angle')
-        print(moveToAngles[2])
+        if stop is False:
+            try:
+                moveToAngles = DobotInverseKinematics.convert_cartesian_coordinate_to_arm_angles(moveToXFloat,moveToYFloat,moveToZFloat,
+                DobotInverseKinematics.lengthUpperArm, DobotInverseKinematics.lengthLowerArm, DobotInverseKinematics.heightFromBase)
+            except Exception as e:
+                self.show_a_warning_message_box('Unknown inverse kinematics error. Check that your coordinate values are within the robot\'s range. '
+                                                + 'The error is shown below:',
+                                                    repr(e),
+                                                    'Inverse Kinematics Error')
+                return
 
 
-        moveToUpperArmAngleFloat = moveToAngles[1]
-        moveToLowerArmAngleFloat = moveToAngles[2]
+            # check that inverse kinematics did not run into a range error. If it does, it should return -999 for all angles, so check that.
+            if(moveToAngles[0] == -999):
+                self.show_a_warning_message_box('Desired coordinate is outside of the robot\'s range.',
+                                                    'It is impossible for the robot arm to reach the coordinate you specified. Build longer arms if this range is desired.'
+                                                    + 'You will probably need higher torque stepper motors as well.',
+                                                    'Inverse Kinematics Range Error')
+                return
 
-        transformedUpperArmAngle = (90 - moveToUpperArmAngleFloat)
-        #-90 different from c++ code, accounts for fact that arm starts at the c++ simulation's 90
-        # note that this line is different from the similar line in the move angles function. Has to do with the inverse kinematics function
-        # and the fact that the lower arm angle is calculated relative to the upper arm angle.
-        transformedLowerArmAngle = 360 + (transformedUpperArmAngle - moveToLowerArmAngleFloat) - 90
-        print('transformed upper angle:')
-        print(transformedUpperArmAngle)
-        print('transformed lower angle:')
-        print(transformedLowerArmAngle)
-
-
-        #check that the final angles are mechanically valid. note that this check only considers final angles, and not angles while the arm is moving
-        # need to pass in real world angles
-        # real world base and upper arm angles are those returned by the ik function.
-        # real world lower arm angle is -1 * transformedLowerArmAngle
-        if(self.check_for_angle_limits_is_valid(moveToAngles[0], moveToAngles[1], -1 * transformedLowerArmAngle)):
-            # continue on to execute the arduino code
-            pass
-        else:
-            # exit, don't move. the check function takes care of the warning message
-            return
+            print('ik base angle')
+            print(moveToAngles[0])
+            print('ik upper angle')
+            print(moveToAngles[1])
+            print('ik lower angle')
+            print(moveToAngles[2])
 
 
+            moveToUpperArmAngleFloat = moveToAngles[1]
+            moveToLowerArmAngleFloat = moveToAngles[2]
 
-        # INSERT CODE HERE TO SEND MOVEMENT COMMANDS TO ARDUINO
-        # I'm simply writing three floats to the arduino. See the following two stack exchange posts for more details on this:
-        # http://arduino.stackexchange.com/questions/5090/sending-a-floating-point-number-from-python-to-arduino
-        # ttps://arduino.stackexchange.com/questions/3753/how-to-send-numbers-to-arduino-uno-via-python-3-and-the-module-serial
-        self.arduinoSerial.write( struct.pack('f', moveToAngles[0]))
-        self.arduinoSerial.write( struct.pack('f',transformedUpperArmAngle) )
-        self.arduinoSerial.write( struct.pack('f',transformedLowerArmAngle) )
+            transformedUpperArmAngle = (90 - moveToUpperArmAngleFloat)
+            #-90 different from c++ code, accounts for fact that arm starts at the c++ simulation's 90
+            # note that this line is different from the similar line in the move angles function. Has to do with the inverse kinematics function
+            # and the fact that the lower arm angle is calculated relative to the upper arm angle.
+            transformedLowerArmAngle = 360 + (transformedUpperArmAngle - moveToLowerArmAngleFloat) - 90
+            print('transformed upper angle:')
+            print(transformedUpperArmAngle)
+            print('transformed lower angle:')
+            print(transformedLowerArmAngle)
 
-        # if movement was successful, update the current position
-        # note that float values are rounded to 3 decimal places for display and converted to strings
-        self.ui.labelBaseAngleValue.setText(str(round(moveToAngles[0],3)))
-        self.ui.labelUpperArmAngleValue.setText(str(round(moveToAngles[1],3)))
-        self.ui.labelLowerArmAngleValue.setText(str(round(moveToAngles[2],3)))
 
-        self.ui.labelCurrentXValue.setText(str(round(moveToXFloat,3)))
-        self.ui.labelCurrentYValue.setText(str(round(moveToYFloat,3)))
-        self.ui.labelCurrentZValue.setText(str(round(moveToZFloat,3)))
-        self.currentXPosition = moveToXFloat
-        self.currentYPosition = moveToYFloat
-        self.currentZPosition = moveToZFloat
+            #check that the final angles are mechanically valid. note that this check only considers final angles, and not angles while the arm is moving
+            # need to pass in real world angles
+            # real world base and upper arm angles are those returned by the ik function.
+            # real world lower arm angle is -1 * transformedLowerArmAngle
+            if(self.check_for_angle_limits_is_valid(moveToAngles[0], moveToAngles[1], -1 * transformedLowerArmAngle)):
+                # continue on to execute the arduino code
+                pass
+            else:
+                # exit, don't move. the check function takes care of the warning message
+                return
 
-        # code for debugging purposes. the firmware I am using (at time of writing this) is set up to print the 3 angles it read to the serial
-        # this reads the 3 angles that the arduino printed from the serial. There is certainly a better way to do this.
-        # this was quick and dirty and is prone to fatal errors (fatal for this program that is).
-        print("i am before the for loop")
-        for i in range(0,15):
-            print ( self.arduinoSerial.readline() )
-        print("i am after the for loop")
+
+
+            # INSERT CODE HERE TO SEND MOVEMENT COMMANDS TO ARDUINO
+            # I'm simply writing three floats to the arduino. See the following two stack exchange posts for more details on this:
+            # http://arduino.stackexchange.com/questions/5090/sending-a-floating-point-number-from-python-to-arduino
+            # ttps://arduino.stackexchange.com/questions/3753/how-to-send-numbers-to-arduino-uno-via-python-3-and-the-module-serial
+            self.arduinoSerial.write( struct.pack('f', moveToAngles[0]))
+            self.arduinoSerial.write( struct.pack('f',transformedUpperArmAngle) )
+            self.arduinoSerial.write( struct.pack('f',transformedLowerArmAngle) )
+
+            # if movement was successful, update the current position
+            # note that float values are rounded to 3 decimal places for display and converted to strings
+            self.ui.labelBaseAngleValue.setText(str(round(moveToAngles[0],3)))
+            self.ui.labelUpperArmAngleValue.setText(str(round(moveToAngles[1],3)))
+            self.ui.labelLowerArmAngleValue.setText(str(round(moveToAngles[2],3)))
+
+            self.ui.labelCurrentXValue.setText(str(round(moveToXFloat,3)))
+            self.ui.labelCurrentYValue.setText(str(round(moveToYFloat,3)))
+            self.ui.labelCurrentZValue.setText(str(round(moveToZFloat,3)))
+            self.currentXPosition = moveToXFloat
+            self.currentYPosition = moveToYFloat
+            self.currentZPosition = moveToZFloat
+
+            # code for debugging purposes. the firmware I am using (at time of writing this) is set up to print the 3 angles it read to the serial
+            # this reads the 3 angles that the arduino printed from the serial. There is certainly a better way to do this.
+            # this was quick and dirty and is prone to fatal errors (fatal for this program that is).
+
+            for i in range(0,15):
+                print ( self.arduinoSerial.readline() )
 
 
 

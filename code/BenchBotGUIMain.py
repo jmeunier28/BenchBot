@@ -188,7 +188,7 @@ class DobotGUIApp(QMainWindow):
 
         '''
 
-        space = self.define_threeDspace()
+        #space = self.define_threeDspace()
 
         #get coordinate locations of objects in standard json file
         self.get_data = CollectData()
@@ -197,7 +197,8 @@ class DobotGUIApp(QMainWindow):
         bot_loc, tube_loc, tip_loc, micro_loc, waste_loc = self.get_data.get_real_coordinates()
         location_array = [bot_loc,tube_loc,tip_loc,micro_loc,waste_loc]
 
-        all_nodes = []
+        top_nodes = []
+        bottom_nodes = []
         robot_dimensions, _ = self.get_data.get_robot_data()
         tip_dimensions, _ = self.get_data.get_tipBox_data()
         tube_dimensions, _ = self.get_data.get_tubeRack_data()
@@ -211,13 +212,15 @@ class DobotGUIApp(QMainWindow):
         for i in range(0,len(location_array)):
             for j in range(0,4):
                 coordinates = self.create_twoDbox(dimension_array[i],location_array[i])
-                all_nodes.append([coordinates[j][0],coordinates[j][1], location_array[i]["z"]-1]) #add all new x,y coords of boxes in our path
+                top_nodes.append([coordinates[j][0],coordinates[j][1], location_array[i]["z"]-1]) #add all new x,y coords of boxes in our path
+                bottom_nodes.append([coordinates[j][0],coordinates[j][1],location_array[i]["z"]-dimension_array[i]["height"]]) #draw bottom of cube box
 
-        for i in range(0,len(all_nodes)):
+
+        '''for i in range(0,len(all_nodes)):
             if all_nodes[i] in space:
-                space.remove(all_nodes[i])
+                space.remove(all_nodes[i])'''
 
-        return space #return space in which robot is allowed to travel including defined obstacles
+        return top_nodes,bottom_nodes #return space in which robot is allowed to travel including defined obstacles
 
     def create_twoDbox(self, dimensions, location):
 
@@ -292,7 +295,7 @@ class DobotGUIApp(QMainWindow):
             stop = True
             print("BenchBot is redirecting path...")
             old_location, new_location = self.fix_path(location_two["x"],location_two["y"],location_two["z"])
-            self.defined_path(new_location, old_location, reverse=False) #recursively call to move again once object has been avoided
+            self.defined_path(old_location, new_location, reverse=False) #recursively call to move again once object has been avoided
 
         if not stop:
             if self.reverse is False:
@@ -354,7 +357,6 @@ class DobotGUIApp(QMainWindow):
             self.check_points(loc_one,loc_two,avaliable_space[i])
 
 
-
     def fix_path(self, x,y,z):
         
         '''
@@ -365,17 +367,17 @@ class DobotGUIApp(QMainWindow):
 
         '''
         coordinates = [x,y,z]
-        space = self.set_path_boundaries()
-        for i in range(0,len(space)):
+        top_node,bottom_node = self.set_path_boundaries()
+        for i in range(0,len(top_node)):
             mindistance = 10000 #some very high number
-            if self.distance(coordinates,space[i]) < mindistance:
-                mindistance = self.distance(coordinates,space[i])
+            if self.distance(coordinates,top_node[i]) < mindistance:
+                mindistance = self.distance(coordinates,top_node[i])
             else:
                 # if the minimum distance from free space to blocked space is at minimum 
                 # then we can travel to that coordinate
-                newXcoord = space[i][0]
-                newYcoord = space[i][1]
-                newZcoord = space[i][2]
+                newXcoord = top_node[i][0]
+                newYcoord = top_node[i][1]
+                newZcoord = top_node[i][2]
         
         coordDict = {"x":newXcoord,"y":newYcoord,"z":newZcoord}
         oldCoordDict = {"x":x,"y":y,"z":z}

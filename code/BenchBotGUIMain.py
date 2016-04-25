@@ -31,6 +31,7 @@ from ColonyTaskDialogGUI import ColonyTaskDialogWindow
 from drawCubes import glWidget
 from get_json_data import CollectData
 import time
+import math
 
 class DobotGUIApp(QMainWindow):
     # class initialization function (initialize the GUI)
@@ -53,6 +54,7 @@ class DobotGUIApp(QMainWindow):
         self.ui.runButton.clicked.connect(self.run_path_way)
         self.ui.workspaceBox.addItem("PCR")
         self.ui.workspaceBox.addItem("Cloning")
+        self.ui.testButton.clicked.connect(self.set_path_boundaries)
 
 
         # connect to menubar QAction item options for Task bar Dialog Box
@@ -142,6 +144,67 @@ class DobotGUIApp(QMainWindow):
             return
 
         self.move_to_cartesian_coordinate(moveToXFloat, moveToYFloat, moveToZFloat)
+
+    def set_path_boundaries(self):
+        '''
+
+        Implement checks to ensure robot does not hit things that we do not want it to hit
+        Takes dimensions and coordinates from user and then transfroms these to verticies of
+        2D box. The z coordinate of each item remains fixed and is what finally maps this 
+        boundary to 3D. Each time the user tries to move the robot the path boundary is checked
+
+        ***** Assumed that user defined coordinates are the upper left hand corner of each box ****
+
+        '''
+
+        #get coordinate locations of objects in standard json file
+        self.get_data = CollectData()
+        self.get_data.loadfile()
+        #get coordinate locations of each item
+        bot_loc, tube_loc, tip_loc, micro_loc, waste_loc = self.get_data.get_real_coordinates()
+        location_array = [bot_loc,tube_loc,tip_loc,micro_loc,waste_loc]
+
+        all_nodes = []
+        robot_dimensions, _ = self.get_data.get_robot_data()
+        tip_dimensions, _ = self.get_data.get_tipBox_data()
+        tube_dimensions, _ = self.get_data.get_tubeRack_data()
+        waste_dimensions, _ = self.get_data.get_wasteContainer_data()
+        micro_dimensions, _ = self.get_data.get_microPlate_data()
+
+        dimension_array = [robot_dimensions,tube_dimensions,tip_dimensions,micro_dimensions,waste_dimensions]
+
+        #define all the places where the BenchBot should not go past 
+
+        for i in range(0,len(location_array)):
+            for j in range(0,4):
+                coordinates = self.create_twoDbox(dimension_array[i],location_array[i])
+                all_nodes.append([coordinates[j][0],coordinates[j][1], location_array[i]["z"]]) #add all new x,y coords of boxes in our path
+
+        return all_nodes
+
+    def create_twoDbox(self, dimensions, location):
+        '''
+        Map length and width of object to make 2D square 
+        return the coordinate locations of the four corners
+        of the box
+
+        '''
+        self.length = dimensions["length"]
+        self.width = dimensions["width"]
+        self.locationX = location["x"]
+        self.locationY = location["y"]
+
+        #create new coordinate locations
+        initialCoord = [self.locationX, self.locationY]
+        upper_right_vert = [self.locationX + self.width,self.locationY] #coordinate y wont change
+        lower_right_vert = [self.locationX+self.width,self.locationY - self.length]
+        lower_left_vert = [self.locationX ,self.locationY -self.length] #coordinate x wont change
+        #print("box dimensions are:\n")
+        #print(initialCoord,upper_right_vert,lower_left_vert,lower_right_vert)
+        coordinate_array = [initialCoord,upper_right_vert,lower_right_vert,lower_left_vert]
+        return coordinate_array
+
+
 
     def run_path_way(self):
 

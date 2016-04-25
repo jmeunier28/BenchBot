@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <property name="usesScrollButtons">
      <bool>false</bool>
@@ -959,6 +959,13 @@ font-size: 18px;</string>
         <widget class="QPushButton" name="runButton">
          <property name="text">
           <string>Run BenchBot</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="testButton">
+         <property name="text">
+          <string>PushButton</string>
          </property>
         </widget>
        </item>

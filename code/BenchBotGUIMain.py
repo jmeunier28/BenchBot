@@ -55,7 +55,7 @@ class DobotGUIApp(QMainWindow):
         self.ui.runButton.clicked.connect(self.run_path_way)
         self.ui.workspaceBox.addItem("PCR")
         self.ui.workspaceBox.addItem("Cloning")
-        self.ui.testButton.clicked.connect(self.set_path_boundaries)
+        #self.ui.testButton.clicked.connect(self.set_path_boundaries)
 
 
         # connect to menubar QAction item options for Task bar Dialog Box
@@ -188,7 +188,7 @@ class DobotGUIApp(QMainWindow):
 
         '''
 
-        #space = self.define_threeDspace()
+        space = self.define_threeDspace()
 
         #get coordinate locations of objects in standard json file
         self.get_data = CollectData()
@@ -212,15 +212,15 @@ class DobotGUIApp(QMainWindow):
         for i in range(0,len(location_array)):
             for j in range(0,4):
                 coordinates = self.create_twoDbox(dimension_array[i],location_array[i])
-                top_nodes.append([coordinates[j][0],coordinates[j][1], location_array[i]["z"]-1]) #add all new x,y coords of boxes in our path
-                bottom_nodes.append([coordinates[j][0],coordinates[j][1],location_array[i]["z"]-dimension_array[i]["height"]]) #draw bottom of cube box
+                all_nodes.append([coordinates[j][0],coordinates[j][1], location_array[i]["z"]-1]) #add all new x,y coords of boxes in our path
+                all_nodes.append([coordinates[j][0],coordinates[j][1],location_array[i]["z"]-dimension_array[i]["height"]]) #draw bottom of cube box
 
 
-        '''for i in range(0,len(all_nodes)):
+        for i in range(0,len(all_nodes)):
             if all_nodes[i] in space:
-                space.remove(all_nodes[i])'''
+                space.remove(all_nodes[i])
 
-        return top_nodes,bottom_nodes #return space in which robot is allowed to travel including defined obstacles
+        return all_nodes #return space in which robot is allowed to travel including defined obstacles
 
     def create_twoDbox(self, dimensions, location):
 

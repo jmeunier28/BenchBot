@@ -11,7 +11,7 @@ to send a custom defined sequence of steps that describe a line. The step sequen
 <Dir> Three characters after the 'l' character describe the direction that the 3 stepper motors on the robot arm need to rotate in. 
       In order from left to right (positions 1-3), the directions are specified for the base, upper arm, and lower arm stepper motors respectively.
       Each direction character takes on the value of 'H' or 'L' (upper case only). Depending on the character, the direction of the stepper motor
-      is specified by sending a HIGH ('H') or LOW ('L') signal to the appropriate STEP min on the A4988 motor driver. 
+      is specified by sending a HIGH ('H') or LOW ('L') signal to the appropriate STEP pin on the A4988 motor driver. 
       
 's' indicates the start of a single line's step sequence
 

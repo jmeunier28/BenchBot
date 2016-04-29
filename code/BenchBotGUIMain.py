@@ -67,7 +67,6 @@ class DobotGUIApp(QMainWindow):
         self.ui.new_cloning_task_action.triggered.connect(self.new_task.show) 
         hello = self.ui.new_pcr_cloning_task_action
         hello.triggered.connect(self.task.show)
-        #primer, samples = self.task.ok_button_clicked
 
         self.ui.new_colony_cloning_task_action.triggered.connect(self.task2.show)
 
@@ -110,13 +109,13 @@ class DobotGUIApp(QMainWindow):
         # populate the serial ports list widget
         self.update_serial_port_list()
 
-    
+
     def file_dialog_clicked(self):
 
         file_dialog = QFileDialog()
         file_dialog.setFileMode(QFileDialog.AnyFile)
         file = file_dialog.getOpenFileName(self, 'Open File')
-        print ('Path to file is:\n'), (file) 
+        print ('Path to file is:\n'), (file)
 
     def pushButtonMoveToCoordinate_clicked(self):
 
@@ -150,26 +149,22 @@ class DobotGUIApp(QMainWindow):
 
         '''
 
-        Robot is free to move within this 3D space 
+        Robot is free to move within this 3D space
 
         '''
-        #i made these up come back later to calibrate actual space
 
-        minimumX = -180
-        minimumY = -180
-        minimumZ = -100
-        maximumX = 180
-        maximumY = 180
+        minimumX = -100
+        minimumY = -100
+        minimumZ = -50
+        maximumX = 100
+        maximumY = 100
         maximumZ = 250
 
-        diffX = maximumX - minimumX
-        diffY = maximumY - minimumY
-        diffZ = maximumZ - minimumZ
         nodes = []
 
-        for x in range(0,diffX):
-            for y in range(0,diffY):
-                for z in range(0,diffZ):
+        for x in range(minimumX,maximumX):
+            for y in range(minimumY,maximumY):
+                for z in range(minimumZ,maximumZ):
                     nodes.append([x,y,z]) #add all nodes in space to list
         return nodes
 
@@ -181,14 +176,14 @@ class DobotGUIApp(QMainWindow):
 
         Implement checks to ensure robot does not hit things that we do not want it to hit
         Takes dimensions and coordinates from user and then transfroms these to verticies of
-        2D box. The z coordinate of each item remains fixed and is what finally maps this 
+        2D box. The z coordinate of each item remains fixed and is what finally maps this
         boundary to 3D. Each time the user tries to move the robot the path boundary is checked
 
         ***** Assumed that user defined coordinates are the upper left hand corner of each box ****
 
         '''
 
-        #space = self.define_threeDspace()
+        space = self.define_threeDspace()
 
         #get coordinate locations of objects in standard json file
         self.get_data = CollectData()
@@ -197,8 +192,9 @@ class DobotGUIApp(QMainWindow):
         bot_loc, tube_loc, tip_loc, micro_loc, waste_loc = self.get_data.get_real_coordinates()
         location_array = [bot_loc,tube_loc,tip_loc,micro_loc,waste_loc]
 
-        top_nodes = []
-        bottom_nodes = []
+        all_nodes = []
+        top_nodes =[]
+        bottom_nodes=[]
         robot_dimensions, _ = self.get_data.get_robot_data()
         tip_dimensions, _ = self.get_data.get_tipBox_data()
         tube_dimensions, _ = self.get_data.get_tubeRack_data()
@@ -207,25 +203,27 @@ class DobotGUIApp(QMainWindow):
 
         dimension_array = [robot_dimensions,tube_dimensions,tip_dimensions,micro_dimensions,waste_dimensions]
 
-        #define all the places where the BenchBot should not go past 
+        #define all the places where the BenchBot should not go past
 
         for i in range(0,len(location_array)):
             for j in range(0,4):
                 coordinates = self.create_twoDbox(dimension_array[i],location_array[i])
                 top_nodes.append([coordinates[j][0],coordinates[j][1], location_array[i]["z"]-1]) #add all new x,y coords of boxes in our path
-                bottom_nodes.append([coordinates[j][0],coordinates[j][1],location_array[i]["z"]-dimension_array[i]["height"]]) #draw bottom of cube box
+                bottom_nodes.append([coordinates[j][0],coordinates[j][1],location_array[i]["z"]-1]) # draw bottom of cube
 
+        for i in range(0,len(top_nodes)):
+            if bottom_nodes[i][0] <= space[i][0] <= top_nodes[i][0]: # if x coord in range
+                if bottom_nodes[i][1] <= space[i][1] <= top_nodes[i][1]: #if y coord in range
+                    if bottom_nodes[i][2] <= space[i][2] <= top_nodes[i][2]: #if z coord in range
+                        space.remove(top_nodes[i]) #remove these from access to robot
+                        space.remove(bottom_nodes[i])
 
-        '''for i in range(0,len(all_nodes)):
-            if all_nodes[i] in space:
-                space.remove(all_nodes[i])'''
-
-        return top_nodes,bottom_nodes #return space in which robot is allowed to travel including defined obstacles
+        return top_nodes,bottom_nodes #return the spaces where the robot shouldnt go
 
     def create_twoDbox(self, dimensions, location):
 
         '''
-        Map length and width of object to make 2D square 
+        Map length and width of object to make 2D square
         return the coordinate locations of the four corners
         of the box
 
@@ -243,7 +241,7 @@ class DobotGUIApp(QMainWindow):
         #print("box dimensions are:\n")
         #print(initialCoord,upper_right_vert,lower_left_vert,lower_right_vert)
         coordinate_array = [initialCoord,upper_right_vert,lower_right_vert,lower_left_vert]
-        
+
         return coordinate_array
 
 
@@ -253,7 +251,7 @@ class DobotGUIApp(QMainWindow):
         '''
 
         Path of robot for now will follow that which is set in the drawCubes python script
-        and shown by the blue line in the WorkSpace tab 3D model 
+        and shown by the blue line in the WorkSpace tab 3D model
         Graph Def:
         robot_vert[2] -> tube_vert[5] -> tipbox_vert[2] -> micro_vert[1] -> waste_vert[2]
         if robot clears these verticies it will not hit anything
@@ -278,7 +276,7 @@ class DobotGUIApp(QMainWindow):
 
         '''
 
-        coordinates are defined at location of right hand corner of object 
+        coordinates are defined at location of right hand corner of object
         pathways are defined by graph
         when reverse is set to True move_to position will move back to move_from position
         when reverse is set to False the robot will move from location one
@@ -290,11 +288,11 @@ class DobotGUIApp(QMainWindow):
         self.reverse = reverse
         stop = False
 
-        result = self.check_path(location_one,location_two)
+        result = self.check_path(self.location_one,self.location_two)
         if result:
             stop = True
             print("BenchBot is redirecting path...")
-            old_location, new_location = self.fix_path(location_two["x"],location_two["y"],location_two["z"])
+            old_location, new_location = self.fix_path(self.location_two["x"],self.location_two["y"],self.location_two["z"])
             self.defined_path(old_location, new_location, reverse=False) #recursively call to move again once object has been avoided
 
         if not stop:
@@ -305,7 +303,7 @@ class DobotGUIApp(QMainWindow):
                 newZPosition = self.location_two["z"]
                 print("sending robot to %f %f %f" % (newXPosition,newYPosition,newZPosition))
                 self.move_to_cartesian_coordinate(newXPosition,newYPosition,newZPosition)
-                
+
             elif self.reverse is True:
                 print("Setting BenchBot now...")
 
@@ -318,26 +316,26 @@ class DobotGUIApp(QMainWindow):
 
         '''
 
-        Method that checks if point in 3d space lies between the start location and end 
+        Method that checks if point in 3d space lies between the start location and end
         location. if it does the var is set to True. If it does not returns False
 
         '''
 
-        result = cross_product(loc_one,loc_two,point)
+        result = self.cross_product(loc_one,loc_two)
         var = False
         if result == 0:
-            result = self.dot_product(loc_one,loc_two,point)
+            result = self.dot_product(loc_one,loc_two)
             if result > 0:
                 distance = self.distance(loc_one,loc_two)
                 if result < math.pow(distance,2):
                     var = True
         return var
-    
+
     def check_path(self,move_from,move_to):
 
         '''
 
-        Check the path between two points if there exists obstacles in 
+        Check the path between two points if there exists obstacles in
         between Bench Bot must stop and be redirected
 
         '''
@@ -350,44 +348,44 @@ class DobotGUIApp(QMainWindow):
         self.y_new = move_to["y"]
         self.z_new = move_to["z"]
 
-        loc_one = [x_orig,y_orig,z_orig]
-        loc_two = [x_new,y_new,z_new]
+        loc_one = [self.x_orig,self.y_orig,self.z_orig]
+        loc_two = [self.x_new,self.y_new,self.z_new]
         avaliable_space = self.set_path_boundaries()
         for i in range(0,len(avaliable_space)):
             self.check_points(loc_one,loc_two,avaliable_space[i])
 
 
     def fix_path(self, x,y,z):
-        
-        '''
-
-        Take the location user is trying to move to and factor in obstacles 
-        present... we will find the best way to move up and around the obstacle 
-        so as to not move through the obstacle 
 
         '''
-        coordinates = [x,y,z]
+
+        Take the location user is trying to move to and factor in obstacles
+        present... we will find the best way to move up and around the obstacle
+        so as to not move through the obstacle
+
+        '''
+        self.coordinates = [x,y,z]
         top_node,bottom_node = self.set_path_boundaries()
         for i in range(0,len(top_node)):
             mindistance = 10000 #some very high number
-            if self.distance(coordinates,top_node[i]) < mindistance:
-                mindistance = self.distance(coordinates,top_node[i])
+            if self.distance(self.coordinates,top_node[i]) < mindistance:
+                mindistance = self.distance(self.coordinates,top_node[i])
             else:
-                # if the minimum distance from free space to blocked space is at minimum 
+                # if the minimum distance from free space to blocked space is at minimum
                 # then we can travel to that coordinate
                 newXcoord = top_node[i][0]
                 newYcoord = top_node[i][1]
                 newZcoord = top_node[i][2]
-        
+
         coordDict = {"x":newXcoord,"y":newYcoord,"z":newZcoord}
         oldCoordDict = {"x":x,"y":y,"z":z}
 
-        self.defined_path(oldCoordDict,coordDict) #now move to this location to avoid obstacle 
+        self.defined_path(oldCoordDict,coordDict, reverse=False) #now move to this location to avoid obstacle
         return oldCoordDict, coordDict
 
 
     def distance(self,p0,p1):
-        return math.sqrt(math.pow(p1[0]-p0[0])+math.pow(p1[1]-p0[1])+math.pow(p1[2]-p0[2]))
+        return math.sqrt(math.pow(p1[0]-p0[0],2)+math.pow(p1[1]-p0[1],2)+math.pow(p1[2]-p0[2],2))
 
     def cross_product(self,p0,p1):
         return list(itertools.product(p0,p1))
@@ -396,20 +394,12 @@ class DobotGUIApp(QMainWindow):
         return sum(p*q for p,q in zip(p0, p1))
 
     def move_to_cartesian_coordinate(self, moveToXFloat, moveToYFloat, moveToZFloat):
-        
+
         # call inverse kinematics function to convert from cartesian coordinates to angles for Dobot arm
         # moveToAngles is a list of angles (type float) with the following order: [base angle, upper arm angle, lower arm angle]
         # catch any errors (likely due to coordinates out of range being input) NEED TO ADDRESS THIS AT SOME POINT
         stop = False
         coord_location = [moveToXFloat,moveToYFloat,moveToZFloat]
-        nodes = self.set_path_boundaries()
-        '''for i in range(0,len(nodes)):
-            if (coord_location[0] == nodes[i][0]) and (coord_location[1] == nodes[i][1]) and (coord_location[2] == nodes[i][2]):
-                print("BenchBot trying to access location that has an obstacle...will redirect path")
-                stop = True
-                node_list = [nodes[i][0],nodes[i][1],nodes[i][2]]
-                self.fix_path(moveToXFloat,moveToYFloat,moveToZFloat)'''
-
 
         if stop is False:
             try:

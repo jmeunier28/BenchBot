@@ -148,6 +148,9 @@ void process_data (const char * data, int count)
   {
   
 
+//this is where the stepping is actually done. iterates through the step sequence packet that was passed to it and steps when necessary
+
+        //controls the step speed.
         int delayTime = 200;
         
         for(int i=0; i < count; i+=3){

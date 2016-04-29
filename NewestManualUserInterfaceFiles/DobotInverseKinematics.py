@@ -18,10 +18,25 @@ import math
 
 
 """
+
+To truly understand the inverse kinematics algorithm,it is strongly advised that one watches these videos.
 polar coordinates conversion: https://www.youtube.com/watch?v=L4v98ZZft68
 IK 2D, 2DOF, revolute revolute: https://www.youtube.com/watch?v=cvzv3YxuoQE
 
-algorithm
+Also, see the readme on inverse kinematics in the github repository.
+
+IMPORTANT: default working angle units are radians
+
+
+A person on reddit suggested that I was performing too many float calculations in this file, which was leading to systematic error.
+He provided a link to some simpler equations to fix this in his code (open-dobot is the github repository).
+I still need to look into this and verify his claim. To the best of my knowledge, the math is correct.
+
+
+# i think i correctly implemented the forward kinematics, but I don't remember whether or not I thoroughly tested it.
+# Need to go back and double check this.
+
+algorithm (my original idea. the actual code is a bit different from this I think. HAVE TO REVISE THIS COMMENT
 
 xy plane is paralell to surface dobot is on. z is perpendicular
 1. first get distance, in xy plane, to current point from origin using forward kinematics, known angles, and pythagoreas thm. This is your radius. Your angle can be defined to be theta original. You now have your starting point in polar coordinates.
@@ -31,11 +46,10 @@ xy plane is paralell to surface dobot is on. z is perpendicular
 5: use IK, see ik 2d video, to find number of degrees and direction to rotate upper and lower arms. Note that there are often two solutions. One (elbow down) is not possible.
 6. Check that move is valid (e.g. not out of range, etc...)
 7. move
-
-
-default working angle units are radians
 """
 #length and height dimensions in mm
+#these are the lengths from the arm angles. Note, I need to look at a diagram posted by the redditor.
+#The height from base is not the same has height from surface dobot is sitting on.
 lengthUpperArm = 135
 lengthLowerArm = 160
 heightFromBase = 80
@@ -85,11 +99,6 @@ def get_arm_angles_from_radius_z_coordinate_using_2d_revolute_revolute_inverse_k
     upperArmAngle = math.atan2(z,r) - math.atan2( (lowerArmLength * math.sin(lowerArmAngle)) , (upperArmLength + (lowerArmLength * math.cos(lowerArmAngle))) )
 
     return [upperArmAngle, lowerArmAngle]
-
-
-
-
-
 
 
 
@@ -147,7 +156,7 @@ def get_radius_in_horizontal_plane_to_end_effector_position(upperArmAngle, lower
 
 
 
-
+#these functions aren't used/implemented yet. might need them in the future. just leaving them here as a reminder.
 
 def get_upper_arm_angle():
     #return the angle in degrees or radians for the upper arm from the accelerometer data and/or known theoretical angle
@@ -162,40 +171,10 @@ def get_base_angle():
     return 45#or radians!
 
 
-"""
-
-    #get polar coordinates for the current point
-    #radius is simply given by the base angle
-    # can read the angles from the IMU and empirically determine the radius and angle - I'm using this approach since it should account for any build up in error, assuming accelerometers
-    #are accurate!!!!
-    #alternatively can just use pythagorean thm on theoretical current x,y data
-
-    startUpperArmAngle = get_upper_arm_angle
-    startLowerArmAngle = get_lower_arm_angle
-    startBaseAngle = get_base_angle
-
-    #could abstract this next bit into a 2D forward kinematics function and then just use the horizontal data returned
-    #only care about the radius, so
-
-
-    currentPosPolarCoordRadius = ???
-    currentPosPolarCoordAngle = currentBaseAngle
-
-
-    #end get polar coordinates
 
 
 
-
-
-
-
-
-
-
-
-"""
-
+#an old command line interface function I used to debug the InverseKinematics code. No longer used.
 
 def command_line_test_inverse_kinematics():
 

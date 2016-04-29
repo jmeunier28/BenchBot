@@ -1,4 +1,4 @@
-Two different serial communications protocols were developed. One sends a 3-tuple of angles (of type float) that describe a point B to move to,
+Two different serial communication protocols were developed. One sends a 3-tuple of angles (of type float) that describe a point B to move to,
 to the arduino, which then moves there using the AccelStepper library. The other protocol (the one located here) uses a character based protocol 
 to send a custom defined sequence of steps that describe a line. The step sequence data for a line is a list of chars structured as follows:
 

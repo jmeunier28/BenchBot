@@ -11,4 +11,4 @@ Repository for EC500 D1 final project to automate steps in the cloning process. 
 
 In order to run this program from the command line the user can type the command:
 
-python BenchBotGUIMain.py  
+'python BenchBotGUIMain.py'  

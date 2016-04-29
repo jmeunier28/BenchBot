@@ -1,1 +1,12 @@
-Two different serial communications protocols were developed.
+Two different serial communications protocols were developed. One sends a 3-tuple of angles (of type float) that describe a point B to move to,
+to the arduino, which then moves there using the AccelStepper library. The other protocol (the one located here) uses a character based protocol 
+to send a custom defined sequence of steps that describe a line. The step sequence is a list of chars structured as follows:
+['l' (indicates start of a single line's data), <Dir>, <Dir>, <Dir>, 's'(indicates start of a single line's step sequence),
+<step>, <step>, <step>,...., 'e']
+
+'l' (indicates start of a single line's data)
+<Dir> Three characters after the 'l' character describe the direction that the 3 stepper motors on the robot arm need to rotate in. 
+      takes on the value of 'H' or 'L'. depending on the character, the direction of the stepper motor
+
+
+packets of configurable lengths. The protocol is 

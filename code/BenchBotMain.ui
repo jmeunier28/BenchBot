@@ -963,13 +963,6 @@ font-size: 18px;</string>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="testButton">
-         <property name="text">
-          <string>PushButton</string>
-         </property>
-        </widget>
-       </item>
-       <item>
         <widget class="QComboBox" name="workspaceBox"/>
        </item>
       </layout>

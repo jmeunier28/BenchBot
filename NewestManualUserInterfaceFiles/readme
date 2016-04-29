@@ -1,3 +1,11 @@
+----Quick Instructions---
+If the "maxStepDataTuplesCanSend" variable in DobotGUIMain.py is set to 1000, upload the SimpleReadAndDisplayDataMax3000noprint.ino file to the
+arduino. If it is set to 1, upload the SimpleReadAndDisplayDataMax3noprint.ino file. Alternatively, specify your own "maxStepDataTuplesCanSend" 
+value. Just be sure to edit the "MAX_INPUT" variable in the .ino file (either one is fine) to be triple the value of the maxStepDataTuplesCanSend 
+variable. The MAX_INPUT variable in the firmware simply defines the maximum number of bytes that the arduino can receive and process at once.
+
+
+----Full Instructions-----
 Two different serial communication protocols were developed. One sends a 3-tuple of angles (of type float) that describe a point B to move to,
 to the arduino, which then moves there using the AccelStepper library. The other protocol (the one located here) uses a character based protocol 
 to send a custom defined sequence of steps that describe a line. The step sequence data for a line is a list of chars structured as follows:
@@ -21,7 +29,7 @@ to send a custom defined sequence of steps that describe a line. The step sequen
        value of '1' (take a step) or '0' (don't take a step).
 
 ------(Footer Data)-----
-'e' indicates the end of the line data (Footer Data)
+'e' indicates the end of the line data
 
       
 The ['l',<Dir>,<Dir>,<Dir>,'s'] section of the line data is reffered to as the "Header data" and is immediately sent to the arduino.

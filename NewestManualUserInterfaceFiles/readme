@@ -26,8 +26,17 @@ to send a custom defined sequence of steps that describe a line. The step sequen
       
 The ['l',<Dir>,<Dir>,<Dir>,'s'] section of the line data is reffered to as the "Header data" and is immediately sent to the arduino.
 All of the step sequence line data (including the ending 'e' character) is chopped up into packets of 3-tuples to send to the arduino. The
-size of the packets can be defined in the code by changing the value "maxStepDataTuplesCanSend" variable. 
+size of the packets can be defined in the code by changing the value of the "maxStepDataTuplesCanSend" variable. A handhsaking algorithm is
+used to help ensure no data is lost when communicating with the arduino. The handshaking algorithm simply involves the python code waiting 
+for the arduino to finish processing a packet of data (indicated by the arduino sending a message to the python code) before sending the next
+message
 
-For example, a line might have 3300 3-tuples worth of step sequence data. If maxStepDataTuplesCanSend = 1000, the python code sends 1000 
-3-tuples (3000 chars) to the arduino. The arduino stores the step characters in an array and then iterates it to execute the steps
+To better understand the communication protocol, consider a line specified by 3300 3-tuples worth of step sequence data. 
+If maxStepDataTuplesCanSend = 1000, the python code sends 1000 3-tuples (3000 chars) to the arduino. The arduino stores the step characters 
+in an array and then iterates through it to execute the steps specified by the step sequence. Once it finishes executing, it sends a "done"
+signal the python code
+
+by the sequence
+
+
 packets of configurable lengths. The protocol is 

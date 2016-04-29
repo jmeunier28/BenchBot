@@ -1,20 +1,33 @@
 Two different serial communications protocols were developed. One sends a 3-tuple of angles (of type float) that describe a point B to move to,
 to the arduino, which then moves there using the AccelStepper library. The other protocol (the one located here) uses a character based protocol 
-to send a custom defined sequence of steps that describe a line. The step sequence is a list of chars structured as follows:
-['l' (indicates start of a single line's data), <Dir>, <Dir>, <Dir>, 's'(indicates start of a single line's step sequence),
-<step-base>, <step-upperArm>, <step-lowerArm>,...., 'e']
+to send a custom defined sequence of steps that describe a line. The step sequence data for a line is a list of chars structured as follows:
 
-'l' indicates start of a single line's data
+['l', <Dir>, <Dir>, <Dir>, 's', <step-base>, <step-upperArm>, <step-lowerArm>, ..., 'e']
+
+
+------(Header Data)-----
+'l' indicates start of a single line's data  
 
 <Dir> Three characters after the 'l' character describe the direction that the 3 stepper motors on the robot arm need to rotate in. 
       In order from left to right (positions 1-3), the directions are specified for the base, upper arm, and lower arm stepper motors respectively.
       Each direction character takes on the value of 'H' or 'L' (upper case only). Depending on the character, the direction of the stepper motor
       is specified by sending a HIGH ('H') or LOW ('L') signal to the appropriate STEP min on the A4988 motor driver. 
       
-'s' inicates the start of a single line's step sequence
+'s' indicates the start of a single line's step sequence
 
-<step> A series of n steps (in 3-tuples) defines the step sequence needed for the arm to move in a straight line.
+------(Step Data)-----
+<step> A series of n steps (in 3-tuples) defines the step sequence needed for the arm to move in a straight line. In order from left to right,
+       the step instruction for the base, upper arm, and lower arm stepper motor is given respectively. Each <step> character takes on the
+       value of '1' (take a step) or '0' (don't take a step).
+
+------(Footer Data)-----
+'e' indicates the end of the line data (Footer Data)
+
       
+The ['l',<Dir>,<Dir>,<Dir>,'s'] section of the line data is reffered to as the "Header data" and is immediately sent to the arduino.
+All of the step sequence line data (including the ending 'e' character) is chopped up into packets of 3-tuples to send to the arduino. The
+size of the packets can be defined in the code by changing the value "maxStepDataTuplesCanSend" variable. 
 
-
+For example, a line might have 3300 3-tuples worth of step sequence data. If maxStepDataTuplesCanSend = 1000, the python code sends 1000 
+3-tuples (3000 chars) to the arduino. The arduino stores the step characters in an array and then iterates it to execute the steps
 packets of configurable lengths. The protocol is 

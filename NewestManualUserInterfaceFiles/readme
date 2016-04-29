@@ -38,6 +38,7 @@ in an array and then iterates through it to execute the steps specified by the s
 arduino sends a "done" signal (literally the string "done") to the python code. The python code, which is in a while loop waiting for this 
 signal, receives the message and either sends the next packet or continues on if no more packets are to be sent.
 
-By setting maxStepDataTuplesCanSend to 1 or a low number less than 20 or so, one can get smooth linear movement without pauses in between 
-the steps specified by an otherwise large packet of data; however, the speed will be painfully slow since it takes considerable time for the 
-packet data to be sent, received, parsed, and processed by the arduino.
+By setting maxStepDataTuplesCanSend to 1 or a low number less than 20 or so, one can get smooth linear movement without noticeable pauses 
+in between the steps specified by an otherwise large packet of data; however, the speed will be painfully slow since it takes considerable 
+time for the packet data to be sent, received, parsed, and processed by the arduino. Switching to a binary protocol or using a raspberry pi 
+to send the STEP signals may remedy this problem.

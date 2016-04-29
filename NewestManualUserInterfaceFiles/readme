@@ -29,14 +29,15 @@ All of the step sequence line data (including the ending 'e' character) is chopp
 size of the packets can be defined in the code by changing the value of the "maxStepDataTuplesCanSend" variable. A handhsaking algorithm is
 used to help ensure no data is lost when communicating with the arduino. The handshaking algorithm simply involves the python code waiting 
 for the arduino to finish processing a packet of data (indicated by the arduino sending a message to the python code) before sending the next
-message
+packet of data. Without the handshaking algorithm, data will be sent to the arduino faster than it can process it and significant data will 
+be lost.
 
 To better understand the communication protocol, consider a line specified by 3300 3-tuples worth of step sequence data. 
 If maxStepDataTuplesCanSend = 1000, the python code sends 1000 3-tuples (3000 chars) to the arduino. The arduino stores the step characters 
-in an array and then iterates through it to execute the steps specified by the step sequence. Once it finishes executing, it sends a "done"
-signal the python code
+in an array and then iterates through it to execute the steps specified by the step sequence. Once it finishes moving the stepper motors, the
+arduino sends a "done" signal (literally the string "done") to the python code. The python code, which is in a while loop waiting for this 
+signal, receives the message and either sends the next packet or continues on if no more packets are to be sent.
 
-by the sequence
-
-
-packets of configurable lengths. The protocol is 
+By setting maxStepDataTuplesCanSend to 1 or a low number less than 20 or so, one can get smooth linear movement without pauses in between 
+the steps specified by an otherwise large packet of data; however, the speed will be painfully slow since it takes considerable time for the 
+packet data to be sent, received, parsed, and processed by the arduino.
